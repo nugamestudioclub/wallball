@@ -27,8 +27,8 @@ func pulse_tiles(position):
 	pef.color = cur_color
 	add_child(pef)
 	#get_parent().add_child(pef)
-	pef.position.x = position.x
-	pef.position.y = position.y
+	pef.position.x = position.x - self.position.x
+	pef.position.y = position.y - self.position.y
 	pass
 	
 func spawn_particles(position, direction):
