@@ -20,6 +20,12 @@ window/size/width=1280
 window/size/height=720
 window/size/resizable=false
 
+[global]
+
+NET=false
+external=false
+editor=false
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true

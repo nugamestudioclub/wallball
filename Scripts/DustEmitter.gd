@@ -14,6 +14,7 @@ export var y_min_rate = -0.75
 export var y_max_rate = 0.75
 export var x_pos_start_min = 0
 export var x_pos_start_max = 0
+export var y_pos_offset = 0
 export var dust_color = Color(1,1,1,1)
 
 var basedust = load("res://Scenes/basedust.tscn")
@@ -41,5 +42,6 @@ func _process(delta):
 		d.x_rate = rand_range(x_min_rate,x_max_rate)
 		d.y_rate = rand_range(y_min_rate,y_max_rate)
 		d.position.x = rand_range(x_pos_start_min, x_pos_start_max)
+		d.position.y = y_pos_offset
 		add_child(d)
 	pass

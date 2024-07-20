@@ -25,7 +25,7 @@ func _ready():
 	pem.dust_color.g += 0.1
 	pem.dust_color.b += 0.3
 	pem.modulate.a = 0.6
-	
+	pem.y_pos_offset = -8
 	add_child(pem)
 	pass # Replace with function body.
 

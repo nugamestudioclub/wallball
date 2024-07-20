@@ -44,7 +44,7 @@ func menu_start():
 	pass
 	
 func change_global_max_gain(newgain):
-	master_max_gain = newgain
+	base.volume_db = master_max_gain
 	if drum_fade != 0:
 		drums.volume_db += drum_fade
 	if drums.volume_db >= master_max_gain + drum_max_gain:
@@ -56,30 +56,22 @@ func change_global_max_gain(newgain):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if drum_fade != 0:
-		drums.volume_db += drum_fade
+	base.volume_db = master_max_gain
+	drums.volume_db += drum_fade
 	if drums.volume_db >= master_max_gain + drum_max_gain:
 		drums.volume_db = master_max_gain + drum_max_gain
-		drum_fade = 0
 	elif drums.volume_db <= master_min_gain:
 		drums.volume_db = master_min_gain
-		drum_fade = 0	
 	
-	if bass_fade != 0:
-		bass.volume_db += bass_fade
+	bass.volume_db += bass_fade
 	if bass.volume_db >= master_max_gain + drum_max_gain:
 		bass.volume_db = master_max_gain + drum_max_gain
-		drum_fade = 0
 	elif bass.volume_db <= master_min_gain:
 		bass.volume_db = master_min_gain
-		drum_fade = 0	
 		
-	if lead_fade != 0:
-		lead.volume_db += lead_fade
+	lead.volume_db += lead_fade
 	if lead.volume_db >= master_max_gain + drum_max_gain:
 		lead.volume_db = master_max_gain + drum_max_gain
-		drum_fade = 0
 	elif lead.volume_db <= master_min_gain:
 		lead.volume_db = master_min_gain
-		drum_fade = 0	
 	pass

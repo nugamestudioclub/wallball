@@ -7,12 +7,12 @@
 light_mode = 2
 
 [node name="DangerZone" type="Node2D"]
-position = Vector2( 0, 112 )
 script = ExtResource( 1 )
 
 [node name="DangerZoneL" type="Light2D" parent="."]
 material = SubResource( 3 )
-scale = Vector2( 8.00608, 1.30417 )
+position = Vector2( 0, 3.8147e-06 )
+scale = Vector2( 8.00608, 0.625 )
 texture = ExtResource( 2 )
 color = Color( 1, 0, 0, 1 )
 energy = 1.44
