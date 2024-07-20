@@ -33,8 +33,20 @@ _global_script_class_icons={
 [application]
 
 config/name="wallball"
-run/main_scene="res://Scenes/ComboHandler.tscn"
+run/main_scene="res://scenes/Main.tscn"
 config/icon="res://icon.png"
+
+[display]
+
+window/size/width=1280
+window/size/height=720
+window/size/resizable=false
+
+[global]
+
+NET=false
+external=false
+editor=false
 
 [gui]
 

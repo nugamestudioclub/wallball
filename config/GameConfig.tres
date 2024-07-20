@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://scripts/GameConfig.cs" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+WallBounds = Vector2( 500, 500 )
+ServeDuration = 0.25
+ServeTimeFactor = 0.2
+RecoverDuration = 2.0

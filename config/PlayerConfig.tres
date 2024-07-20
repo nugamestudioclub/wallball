@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://scripts/PlayerConfig.cs" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+Radius = 15.0
+JumpDuration = 0.5
+JumpSpeed = 600.0
+MoveSpeed = 300.0
+Gravity = 1000.0

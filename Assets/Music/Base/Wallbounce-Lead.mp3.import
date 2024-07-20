@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Wallbounce-Lead.mp3-ad171a7940993a60f7407d9e2925d600.mp3str"
+
+[deps]
+
+source_file="res://Assets/Music/Base/Wallbounce-Lead.mp3"
+dest_files=[ "res://.import/Wallbounce-Lead.mp3-ad171a7940993a60f7407d9e2925d600.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

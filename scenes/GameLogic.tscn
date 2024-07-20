@@ -1,0 +1,21 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/Ball.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/GameLogic.cs" type="Script" id=2]
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://config/PlayerConfig.tres" type="Resource" id=4]
+[ext_resource path="res://config/GameConfig.tres" type="Resource" id=5]
+[ext_resource path="res://config/BallConfig.tres" type="Resource" id=6]
+
+[node name="GameLogic" type="Node2D"]
+script = ExtResource( 2 )
+gameConfig = ExtResource( 5 )
+playerConfig = ExtResource( 4 )
+ballConfig = ExtResource( 6 )
+ballSpritePath = "Ball"
+
+[node name="Ball" parent="." instance=ExtResource( 1 )]
+position = Vector2( 71, 379 )
+
+[node name="Player" parent="." instance=ExtResource( 3 )]
+position = Vector2( 172, 130 )
