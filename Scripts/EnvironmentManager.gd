@@ -26,8 +26,8 @@ func _ready():
 	begin_aberration()
 	pass # Replace with function body.
 	
-func pulse_effect(postion):
-	pulser.pulse_effect(position)
+func pulse_effect(position):
+	pulser.pulse_tiles(position)
 	pass
 	
 func spawn_particles(position, direction):
