@@ -217,7 +217,10 @@ public class GameLogic : Node2D
 
         // TODO: Safe/unsafe zones
 
-        // TODO: Signal hit effect
+        //Signal hit effect
+        Node2D environment = GetEnvironment();
+        environment.Call("pulse_effect", PlayToScreen(point));
+        environment.Call("spawn_particles", PlayToScreen(point), ball.Velocity);
 
         if (stage == GameStage.Serving)
             ChangeStage(GameStage.Recovering);
