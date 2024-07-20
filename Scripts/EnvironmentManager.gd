@@ -5,6 +5,8 @@ extends Node2D
 # var a = 2
 # var b = "text"
 
+export(String, FILE) var settings_file
+
 var vol_slider
 var music_manager
 var blueshift
@@ -62,3 +64,4 @@ func _process(delta):
 			aberration = 0
 	music_manager.master_max_gain = linear2db(vol_slider.value) # Slider
 	pass
+

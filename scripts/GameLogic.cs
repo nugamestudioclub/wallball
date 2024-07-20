@@ -46,6 +46,10 @@ public class GameLogic : Node2D
 
 	private float timeInStage = 0.0f;
 
+	[Export(PropertyHint.File)]
+	private String settingsFile;
+	
+	private GameSettings settings;
 
 	private ColorRect GetPlayArea()
 	{
@@ -99,6 +103,14 @@ public class GameLogic : Node2D
 		player.MoveSpeed = playerConfig.MoveSpeed;
 
 		// TODO: Initialize score
+		if (ResourceLoader.Exists(settingsFile)) {
+			settings = ResourceLoader.Load<GameSettings>(settingsFile);
+		}
+		else {
+			settings = new GameSettings();
+		}
+		((Godot.Object)GetEnvironment().Get("vol_slider")).Set("value", settings.volume);
+		((HSlider)GetEnvironment().Get("vol_slider")).Connect("value_changed", this, nameof(_OnVolumeChanged));
 
 		stage = GameStage.Seeking;
 	}
@@ -410,5 +422,15 @@ public class GameLogic : Node2D
 			player.ChangeState(PlayerState.Jumping);
 		}
 		player.UpdateState(delta);
+	}
+	
+	private void _OnVolumeChanged(float newVol) {
+		GD.Print("Changed");
+		settings.volume = newVol;
+		SaveSettings();
+	}
+	
+	private void SaveSettings() {
+		ResourceSaver.Save(settingsFile, settings);
 	}
 }

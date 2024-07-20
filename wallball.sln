@@ -1,12 +1,15 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wallball", "wallball.csproj", "{37C2DD42-F9BC-4923-AAB8-F1016DB8CEFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-	Debug|Any CPU = Debug|Any CPU
-	ExportDebug|Any CPU = ExportDebug|Any CPU
-	ExportRelease|Any CPU = ExportRelease|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		ExportDebug|Any CPU = ExportDebug|Any CPU
+		ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{37C2DD42-F9BC-4923-AAB8-F1016DB8CEFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -15,5 +18,11 @@ Global
 		{37C2DD42-F9BC-4923-AAB8-F1016DB8CEFA}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{37C2DD42-F9BC-4923-AAB8-F1016DB8CEFA}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{37C2DD42-F9BC-4923-AAB8-F1016DB8CEFA}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {05F0E7A1-F5C9-4234-BEF4-ADEB55A67B9A}
 	EndGlobalSection
 EndGlobal

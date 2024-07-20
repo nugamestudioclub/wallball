@@ -13,6 +13,7 @@ script = ExtResource( 2 )
 gameConfig = ExtResource( 5 )
 playerConfig = ExtResource( 7 )
 ballConfig = ExtResource( 6 )
+settingsFile = "res://Settings.tres"
 
 [node name="Ball" parent="." instance=ExtResource( 3 )]
 position = Vector2( 71, 379 )
