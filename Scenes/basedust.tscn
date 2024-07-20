@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/DustBehavior.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Tiles/Transparent/tile_0216.png" type="Texture" id=2]
+
+[node name="Base Dust" type="Sprite"]
+position = Vector2( -17, 210 )
+texture = ExtResource( 2 )
+script = ExtResource( 1 )

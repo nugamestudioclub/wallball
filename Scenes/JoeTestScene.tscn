@@ -1,8 +1,11 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Assets/Tilemap/monochrome_tilemap_packed.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/TileEffect.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/pulseeffecttiles.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/dustemitterball.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scripts/OutputIDOfSelf.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/DustEvent.gd" type="Script" id=6]
 
 [sub_resource type="CanvasItemMaterial" id=2]
 render_priority = 1
@@ -513,11 +516,12 @@ points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 20/z_index = 0
 
 [node name="Node2D" type="Node2D"]
+script = ExtResource( 5 )
 
 [node name="TileMap" type="TileMap" parent="."]
 modulate = Color( 0.403922, 0.286275, 0.501961, 1 )
 material = SubResource( 2 )
-position = Vector2( 2, 257 )
+position = Vector2( 207, 325 )
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
@@ -526,7 +530,10 @@ tile_data = PoolIntArray( -1048576, 17, 0, -1048575, 10, 0, -1048574, 10, 0, -10
 script = ExtResource( 2 )
 
 [node name="Pulse Effect" parent="TileMap" instance=ExtResource( 3 )]
-starting_color = Color( 1, 0.380392, 0, 1 )
 
-[node name="Node2D" type="Node2D" parent="."]
-position = Vector2( 127, -126 )
+[node name="Dust Emitter" parent="." instance=ExtResource( 4 )]
+
+[node name="Dust Event" type="Node2D" parent="."]
+position = Vector2( 159, 59 )
+script = ExtResource( 6 )
+dust_color = Color( 0.054902, 1, 0, 1 )

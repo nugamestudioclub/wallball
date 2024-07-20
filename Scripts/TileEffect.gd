@@ -28,7 +28,7 @@ func pulse_tiles(position):
 	pef.position.y = position.y
 	pass
 	
-func spawn_particles(postion, direction):
+func spawn_particles(position, direction):
 	pass
 	
 	
