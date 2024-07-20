@@ -29,6 +29,8 @@ public class GameLogic : Node2D {
 
 	float recoverDuration;
 
+	float catchInfluencePercent;
+
 	private Vector2 wallBounds;
 
 	private PlayArea playArea = new PlayArea();
@@ -72,6 +74,8 @@ public class GameLogic : Node2D {
 		serveDuration = gameConfig.ServeDuration;
 		serveTimeFactor = gameConfig.ServeTimeFactor;
 		recoverDuration = gameConfig.RecoverDuration;
+		catchInfluencePercent = gameConfig.CatchInfluence;
+
 
 		Vector2 screenScale = PlayToScreenScale();
 
@@ -208,8 +212,6 @@ public class GameLogic : Node2D {
 		environment.Call("pulse_effect", PlayToScreen(point));
 		environment.Call("spawn_particles", PlayToScreen(point), ball.Velocity);
 
-		if( stage == GameStage.Serving )
-			ChangeStage(GameStage.Recovering);
 	}
 
 	private bool IsFalling(Player player) {
@@ -349,10 +351,8 @@ public class GameLogic : Node2D {
 			if( input.Finish || timeInStage >= serveDuration ) {
 				// TODO: Different combos have different directions
 				float angle = (-15f / 180f) * Mathf.Pi;
-				var throwDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-				var catchDirection = new Vector2(catchVector.x, Mathf.Max(catchVector.y, 0f)).Normalized();
-				ball.Velocity = (catchDirection + throwDirection).Normalized() * ball.Velocity.Length();
-				ChangeStage(GameStage.Recovering);
+				ball.Velocity = CalculateThrowVelocity(angle);
+                ChangeStage(GameStage.Recovering);
 			}
 			break;
 		case GameStage.Recovering:
@@ -361,6 +361,13 @@ public class GameLogic : Node2D {
 			break;
 		}
 	}
+
+	private Vector2 CalculateThrowVelocity(float angle)
+	{
+        var throwDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+        var catchDirection = new Vector2(catchVector.x, Mathf.Min(catchVector.y, 0f)).Normalized();
+        return (catchDirection * catchInfluencePercent + throwDirection).Normalized() * ball.Velocity.Length();
+    }
 
 	private void ProcessState(float delta) {
 		if( IsMoving(player) && player.State != PlayerState.Moving ) {

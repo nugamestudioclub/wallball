@@ -6,6 +6,6 @@
 script = ExtResource( 1 )
 Radius = 15.0
 JumpDuration = 0.5
-JumpSpeed = 600.0
-MoveSpeed = 300.0
-Gravity = 1000.0
+JumpSpeed = 1000.0
+MoveSpeed = 500.0
+Gravity = 2500.0

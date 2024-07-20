@@ -12,4 +12,7 @@ public class GameConfig : Resource {
 
 	[Export]
 	public float RecoverDuration { get; set; } = 2.0f;
+
+    [Export]
+    public float CatchInfluence { get; set; } = 1.0f;
 }
