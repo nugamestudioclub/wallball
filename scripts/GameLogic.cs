@@ -262,11 +262,15 @@ public class GameLogic : Node2D
         return player.IsGrounded && input.Jump;
     }
 
-    private void MoveBall(float delta)
-    {
-        ball.PreviousPosition = ball.Position;
-        ball.Velocity += new Vector2(0, ball.Gravity) * delta;
-        ball.Position += ball.Velocity * delta;
+    private void MoveBall(float delta) {
+		ball.PreviousPosition = ball.Position;
+		if( stage == GameStage.Serving ) {
+            ball.Position = player.Position;
+        }
+        else {
+            ball.Velocity += new Vector2(0, ball.Gravity) * delta;
+            ball.Position += ball.Velocity * delta;
+        }
     }
 
     private void MovePlayer(float delta)
@@ -279,6 +283,9 @@ public class GameLogic : Node2D
                 ? -player.JumpSpeed
                 : player.Velocity.y + (G(player) * delta);
             player.Velocity = new Vector2(vx, vy);
+        }
+        else {
+            player.Velocity = new Vector2(player.Velocity.x, player.Velocity.y + (G(player) * delta));
         }
         player.Position += player.Velocity * delta;
     }
@@ -294,7 +301,6 @@ public class GameLogic : Node2D
 
         HandleBallWallContact(collision);
     }
-
 
     private void ProcessCollision(float delta)
     {
