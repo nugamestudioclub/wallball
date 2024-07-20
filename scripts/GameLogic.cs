@@ -16,6 +16,7 @@ public class GameLogic : Node2D
     [Export]
     private string ballSpritePath;
 
+    private readonly PlayerInput input = new PlayerInput();
 
     public override void _Ready()
     {
@@ -39,9 +40,38 @@ public class GameLogic : Node2D
 
     public override void _PhysicsProcess(float delta)
     {
+        ProcessInput();
         ProcessMovement(delta);
         ProcessCollision(delta);
     }
+
+    private void ProcessInput()
+    {
+        if( Input.IsActionJustPressed("ui_left") )
+            input.Left = true;
+        else if( !Input.IsActionPressed("ui_left") )
+            input.Left = false;
+		if( Input.IsActionJustPressed("ui_right") )
+			input.Right = true;
+		else if( !Input.IsActionPressed("ui_right") )
+			input.Right = false;
+		if( Input.IsActionJustPressed("ui_up") )
+			input.Up = true;
+		else if( !Input.IsActionPressed("ui_up") )
+			input.Up = false;
+		if( Input.IsActionJustPressed("ui_down") )
+			input.Down = true;
+		else if( !Input.IsActionPressed("ui_down") )
+			input.Down = false;
+		if( Input.IsActionJustPressed("ui_accept") )
+			input.Jump = true;
+		else if( !Input.IsActionPressed("ui_accept") )
+			input.Jump = false;
+		if( Input.IsActionJustPressed("ui_accept") )
+			input.Finish = true;
+		else if( !Input.IsActionPressed("ui_accept") )
+			input.Finish = false;
+	}
 
     private void ProcessMovement(float delta)
     {
@@ -128,7 +158,4 @@ public class GameLogic : Node2D
     {
         return position2.DistanceSquaredTo(position1) < (radius1 + radius2) * (radius1 + radius2);
     }
-
-
-
 }
