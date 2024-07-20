@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scripts/ComboHandler.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/ComboList.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/Combo.gd" type="Script" id=3]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 3 )
+points = 100
+inputs = [ "A", "D" ]
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 3 )
+points = 0
+inputs = [ "A", "D", "W" ]
+
+[node name="Root" type="Node"]
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ComboList" parent="Control" instance=ExtResource( 2 )]
+combo_handler_path = NodePath("../../ComboHandler")
+
+[node name="ComboHandler" type="Node" parent="."]
+script = ExtResource( 1 )
+combo_list = [ SubResource( 1 ), SubResource( 2 ) ]
