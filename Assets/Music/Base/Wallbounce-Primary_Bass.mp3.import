@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Wallbounce-Primary_Bass.mp3-1d706ed82f0c6f137a5cc35303604616.mp3str"
+
+[deps]
+
+source_file="res://Assets/Music/Base/Wallbounce-Primary_Bass.mp3"
+dest_files=[ "res://.import/Wallbounce-Primary_Bass.mp3-1d706ed82f0c6f137a5cc35303604616.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

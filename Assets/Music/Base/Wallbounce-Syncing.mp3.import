@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Wallbounce-Syncing.mp3-ce82adf1e493e31bba2e4608c845a0ad.mp3str"
+
+[deps]
+
+source_file="res://Assets/Music/Base/Wallbounce-Syncing.mp3"
+dest_files=[ "res://.import/Wallbounce-Syncing.mp3-ce82adf1e493e31bba2e4608c845a0ad.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

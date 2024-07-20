@@ -12,6 +12,8 @@ export var x_min_rate = -0.75
 export var x_max_rate = 0.75
 export var y_min_rate = -0.75
 export var y_max_rate = 0.75
+export var x_pos_start_min = 0
+export var x_pos_start_max = 0
 export var dust_color = Color(1,1,1,1)
 
 var basedust = load("res://Scenes/basedust.tscn")
@@ -20,6 +22,7 @@ var frame_counter = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	print("Dust Emitter Spawned")
 	pass # Replace with function body.
 
 
@@ -35,7 +38,8 @@ func _process(delta):
 		d.modulate = dust_color
 		d.modulate.a = rand_range(0.25, 1)
 		d.rotation_rate = rand_range(-0.3,0.3)
-		d.x_rate = rand_range(-0.75,0.75)
-		d.y_rate = rand_range(-0.75,0.75)
+		d.x_rate = rand_range(x_min_rate,x_max_rate)
+		d.y_rate = rand_range(y_min_rate,y_max_rate)
+		d.position.x = rand_range(x_pos_start_min, x_pos_start_max)
 		add_child(d)
 	pass

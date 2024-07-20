@@ -12,6 +12,8 @@ var cur_color = starting_color
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	cur_color = starting_color
+	#pulse_tiles(Vector2(1,1))
 	pass # Replace with function body.
 	
 #resets the color of the pulse and particle effect
@@ -24,6 +26,7 @@ func pulse_tiles(position):
 	var pef = pulseeffect.instance()
 	pef.color = cur_color
 	add_child(pef)
+	#get_parent().add_child(pef)
 	pef.position.x = position.x
 	pef.position.y = position.y
 	pass
