@@ -1,18 +1,33 @@
 using Godot;
 using System;
 
+public enum GameStage {
+	Seeking,
+	Serving,
+	Recovering,
+}
+
 public class GameLogic : Node2D {
 	[Export]
-	private Node ballData;
-	private Ball ball;
+	private GameConfig gameConfig;
 
 	[Export]
 	private PlayerConfig playerConfig = new PlayerConfig();
 
+	[Export]
+	private BallConfig ballConfig;
+
 	private Player player = new Player();
 
-	[Export]
+	private Ball ball = new Ball();
+
 	private Vector2 wallBounds;
+
+	float serveDuration;
+
+	float serveTimeFactor;
+
+	float recoverDuration;
 
 	private Vector2 tileSpan; //how many tiles in the game area
 
@@ -21,28 +36,41 @@ public class GameLogic : Node2D {
 
 	private readonly PlayerInput input = new PlayerInput();
 
-	public override void _Ready() {
-		//initialize ball
-		ball = new Ball();
-		ball.Velocity = new Vector2(400, 400);
-		ball.Position = GetChild<Node2D>(0).Position;
-		//initialize score
+	private GameStage stage;
 
+	private float timeInStage = 0.0f;
+
+	public override void _Ready() {
+		wallBounds = gameConfig.WallBounds;
+		serveDuration = gameConfig.ServeDuration;
+		serveTimeFactor = gameConfig.ServeTimeFactor;
+		recoverDuration = gameConfig.RecoverDuration;
+
+
+		ball.Position = GetChild<Node2D>(0).Position;
+		ball.Radius = ballConfig.Radius;
+		ball.Gravity = ballConfig.Gravity;
+		ball.Velocity = ballConfig.InitialVelocity;
+
+		player.Position = GetChild<Node2D>(1).Position;
 		player.Radius = playerConfig.Radius;
 		player.Gravity = playerConfig.Gravity;
 		player.JumpDuration = playerConfig.JumpDuration;
 		player.JumpSpeed = playerConfig.JumpSpeed;
 		player.MoveSpeed = playerConfig.MoveSpeed;
-		player.Position = GetChild<Node2D>(1).Position;
+
+		// TODO: Initialize score
+
+		stage = GameStage.Seeking;
 	}
 
 	public override void _Draw() {
 		var wallColor = new Color(1, 1, 0, .5f);
 		DrawRect(new Rect2(0, 0, wallBounds), wallColor, filled: true);
 
-		//var colliderColor = new Color(0, 1, 0);
-		//DrawCircle(player.Position, player.Radius, colliderColor);
-		//DrawCircle(ball.Position, ball.Radius, colliderColor);
+		var colliderColor = new Color(0, 1, 0);
+		DrawCircle(player.Position, player.Radius, colliderColor);
+		DrawCircle(ball.Position, ball.Radius, colliderColor);
 	}
 
 	public override void _Process(float delta) {
@@ -54,14 +82,39 @@ public class GameLogic : Node2D {
 	}
 
 	public override void _PhysicsProcess(float delta) {
+		if( stage == GameStage.Serving )
+			delta *= serveTimeFactor;
+
 		ProcessInput();
 		ProcessState(delta);
 		ProcessMovement(delta);
 		ProcessCollision(delta);
+		ProcessStage(delta);
 	}
 
 	private bool CalculateCircleCircleCollision(Vector2 position1, float radius1, Vector2 position2, float radius2) {
 		return position2.DistanceSquaredTo(position1) < (radius1 + radius2) * (radius1 + radius2);
+	}
+
+	Vector2 CalculateCircleContactPoint(Vector2 position, float radius, Vector2 collision) {
+		if( collision.x == 0 ) {
+			return new Vector2(
+				position.x,
+				collision.y < 0 ? position.y - radius : position.y + radius
+			);
+		}
+		else if( collision.y == 0 ) {
+			return new Vector2(
+				collision.x < 0 ? position.x - radius : position.x + radius,
+				position.y
+			);
+		}
+		else {
+			return new Vector2(
+				collision.x < 0 ? position.x - radius : position.x + radius,
+				collision.y < 0 ? position.y - radius : position.y + radius
+			);
+		}
 	}
 
 	private Vector2 CalculateCircleWallCollision(Vector2 position, float radius) {
@@ -74,10 +127,32 @@ public class GameLogic : Node2D {
 		return new Vector2(x, y);
 	}
 
+	private void ChangeStage(GameStage stage) {
+		this.stage = stage;
+		timeInStage = 0.0f;
+		input.Clear();
+		GD.Print(stage);
+	}
+
 	private float G(Player player) {
 		return player.State == PlayerState.Jumping
 			? player.Gravity * (player.TimeInState / player.JumpDuration)
 			: player.Gravity;
+	}
+
+	private void HandleBallWallContact(Vector2 collision) {
+		if( collision.LengthSquared() == 0 )
+			return;
+
+		var point = CalculateCircleContactPoint(ball.Position, ball.Radius, collision);
+		GD.Print($"ball contact point: {point}");
+
+		// TODO: Safe/unsafe zones
+
+		// TODO: Signal hit effect
+
+		if( stage == GameStage.Serving )
+			ChangeStage(GameStage.Recovering);
 	}
 
 	private bool IsFalling(Player player) {
@@ -103,19 +178,20 @@ public class GameLogic : Node2D {
 	}
 
 	private void MoveBall(float delta) {
-		//apply velocity and gravity to position
 		ball.PreviousPosition = ball.Position;
 		ball.Velocity += new Vector2(0, ball.Gravity) * delta;
 		ball.Position += ball.Velocity * delta;
-
 	}
 
 	private void MovePlayer(float delta) {
-		float vx = (Convert.ToSingle(input.Right) - Convert.ToSingle(input.Left)) * player.MoveSpeed;
-		float vy = IsStartingJump(player)
-			? -player.JumpSpeed
-			: player.Velocity.y + (G(player) * delta);
-		player.Velocity = new Vector2(vx, vy);
+		player.PreviousPosition = player.Position;
+		if( stage != GameStage.Serving ) {
+			float vx = (Convert.ToSingle(input.Right) - Convert.ToSingle(input.Left)) * player.MoveSpeed;
+			float vy = IsStartingJump(player)
+				? -player.JumpSpeed
+				: player.Velocity.y + (G(player) * delta);
+			player.Velocity = new Vector2(vx, vy);
+		}
 		player.Position += player.Velocity * delta;
 	}
 
@@ -124,14 +200,17 @@ public class GameLogic : Node2D {
 		float vx = collision.x == 0 ? ball.Velocity.x : -ball.Velocity.x;
 		float vy = collision.y == 0 ? ball.Velocity.y : -ball.Velocity.y;
 
-		//emit signal for which tile(s) collided with
-
+		ball.Position -= collision;
 		ball.Velocity = new Vector2(vx, vy);
+
+		HandleBallWallContact(collision);
 	}
+
 
 	private void ProcessCollision(float delta) {
 		ProcessBallWallCollision();
 		ProcessPlayerWallCollision();
+		ProcessPlayerBallCollision();
 	}
 
 	private void ProcessInput() {
@@ -166,6 +245,18 @@ public class GameLogic : Node2D {
 		MovePlayer(delta);
 	}
 
+	private void ProcessPlayerBallCollision() {
+		var areColliding = CalculateCircleCircleCollision(player.Position, player.Radius, ball.Position, ball.Radius);
+		switch( stage ) {
+		case GameStage.Seeking:
+			if( areColliding )
+				ChangeStage(GameStage.Serving);
+			break;
+		case GameStage.Serving:
+			break;
+		}
+	}
+
 	private void ProcessPlayerWallCollision() {
 		var collision = CalculateCircleWallCollision(player.Position, player.Radius);
 		// Bottom
@@ -182,6 +273,21 @@ public class GameLogic : Node2D {
 			player.IsGrounded = false;
 		}
 		player.Position -= collision;
+	}
+
+	private void ProcessStage(float delta) {
+		timeInStage += delta;
+
+		switch( stage ) {
+		case GameStage.Serving:
+			if( input.Finish || timeInStage >= serveDuration )
+				ChangeStage(GameStage.Recovering);
+			break;
+		case GameStage.Recovering:
+			if( timeInStage >= recoverDuration )
+				ChangeStage(GameStage.Seeking);
+			break;
+		}
 	}
 
 	private void ProcessState(float delta) {

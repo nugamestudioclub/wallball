@@ -35,4 +35,8 @@ class PlayerInput {
 		get => _bits[FINISH];
 		set => _bits[FINISH] = value;
 	}
+
+	public void Clear() {
+		_bits.SetAll(false);
+	}
 }
