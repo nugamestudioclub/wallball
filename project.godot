@@ -12,17 +12,17 @@ _global_script_classes=[ {
 "base": "Resource",
 "class": "Combo",
 "language": "GDScript",
-"path": "res://Combo.gd"
+"path": "res://Scripts/Combo.gd"
 }, {
 "base": "Node",
 "class": "ComboHandler",
 "language": "GDScript",
-"path": "res://ComboHandler.gd"
+"path": "res://Scripts/ComboHandler.gd"
 }, {
 "base": "HBoxContainer",
 "class": "ComboItem",
 "language": "GDScript",
-"path": "res://ComboItem.gd"
+"path": "res://Scripts/ComboItem.gd"
 } ]
 _global_script_class_icons={
 "Combo": "",
@@ -33,7 +33,7 @@ _global_script_class_icons={
 [application]
 
 config/name="wallball"
-run/main_scene="res://ComboHandler.tscn"
+run/main_scene="res://Scenes/ComboHandler.tscn"
 config/icon="res://icon.png"
 
 [gui]
