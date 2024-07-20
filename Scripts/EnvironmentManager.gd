@@ -47,11 +47,10 @@ func _process(delta):
 		blueshift.position.y += 0.1
 
 		redshift.modulate.a += 0.01
-		redshift.position.x -= 0.1
-		redshift.position.y -= 0.2
+		redshift.position.x -= 0.2
+		redshift.position.y -= 0.1
 		if blueshift.modulate.a >= 0.2:
 			aberration = 0
-			backpedal_aberration()
 	elif aberration == -1:
 		blueshift.modulate.a -= 0.01
 		blueshift.position.x -= 0.2
@@ -61,6 +60,5 @@ func _process(delta):
 		redshift.modulate.a -= 0.01
 		if blueshift.modulate.a <= 0:
 			aberration = 0
-			begin_aberration()
 	music_manager.master_max_gain = vol_slider.value # Slider
 	pass

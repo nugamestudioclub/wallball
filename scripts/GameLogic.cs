@@ -194,6 +194,15 @@ public class GameLogic : Node2D
 
     private void ChangeStage(GameStage stage)
     {
+        Node2D environment = GetEnvironment();
+        if (stage == GameStage.Serving)
+        {
+            environment.Call("begin_aberration");
+        }
+        else if (this.stage == GameStage.Serving)
+        {
+            environment.Call("backpedal_aberration");
+        }
         this.stage = stage;
         timeInStage = 0.0f;
         input.Finish = false;
