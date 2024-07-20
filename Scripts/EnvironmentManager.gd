@@ -21,7 +21,7 @@ func _ready():
 	vol_slider = get_node("UI/VolSlider")
 	music_manager = get_node("Music Manager")
 	blueshift = get_node("Aberration Wall/Blue Shift")
-	redshift = get_node("Aberration Wall/Blue Shift")
+	redshift = get_node("Aberration Wall/Red Shift")
 	pulser = get_node("Main Wall")
 	begin_aberration()
 	pass # Replace with function body.
@@ -43,20 +43,20 @@ func backpedal_aberration():
 func _process(delta):
 	if aberration == 1:
 		blueshift.modulate.a += 0.01
-		blueshift.position.x += 0.3
-		blueshift.position.y += 0
+		blueshift.position.x += 0.1
+		blueshift.position.y += 0.2
 		redshift.modulate.a += 0.01
-		redshift.position.x -= 0.2
-		redshift.position.y -= 0.1
-		if blueshift.modulate.a >= 0.4:
+		redshift.position.x -= 0.1
+		redshift.position.y -= 0.2
+		if blueshift.modulate.a >= 0.2:
 			aberration = 0
-			#backpedal_aberration()
+			backpedal_aberration()
 	elif aberration == -1:
 		blueshift.modulate.a -= 0.01
-		blueshift.position.x -= 0.5
-		blueshift.position.y -= 0.5
-		redshift.position.x += 0.5
-		redshift.position.y += 0.5
+		blueshift.position.x -= 0.1
+		blueshift.position.y -= 0.2
+		redshift.position.x += 0.1
+		redshift.position.y += 0.2
 		redshift.modulate.a -= 0.01
 		if blueshift.modulate.a <= 0:
 			aberration = 0

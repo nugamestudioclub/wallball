@@ -18,13 +18,6 @@ ballConfig = ExtResource( 6 )
 position = Vector2( 71, 379 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 50, 50 )
+position = Vector2( 172, 130 )
 
 [node name="Environment" parent="." instance=ExtResource( 1 )]
-
-[node name="PlayArea" type="ColorRect" parent="."]
-margin_left = -112.0
-margin_top = -112.0
-margin_right = 112.0
-margin_bottom = 112.0
-color = Color( 1, 1, 1, 0.25098 )
