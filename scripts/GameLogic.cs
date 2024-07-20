@@ -5,6 +5,7 @@ public enum GameStage {
 	Seeking,
 	Serving,
 	Recovering,
+	Lose
 }
 
 public class GameLogic : Node2D {
@@ -249,7 +250,7 @@ public class GameLogic : Node2D {
 
 	private void MovePlayer(float delta) {
 		player.PreviousPosition = player.Position;
-		if( stage != GameStage.Serving ) {
+		if( stage != GameStage.Serving && stage != GameStage.Lose) {
 			float vx = (Convert.ToSingle(input.Right) - Convert.ToSingle(input.Left)) * player.MoveSpeed;
 			float vy = IsStartingJump(player)
 				? -player.JumpSpeed
@@ -315,7 +316,7 @@ public class GameLogic : Node2D {
 		var areColliding = CalculateCircleCircleCollision(player.Position, player.Radius, ball.Position, ball.Radius);
 		switch( stage ) {
 		case GameStage.Seeking:
-			if( areColliding ) {
+			if( areColliding && !player.IsGrounded) {
 				catchVector = ball.Position - player.Position;
 				ChangeStage(GameStage.Serving);
 			}
@@ -330,7 +331,13 @@ public class GameLogic : Node2D {
 		// Bottom
 		if( collision.y > 0 ) {
 			player.IsGrounded = true;
-		}
+            if (stage == GameStage.Serving)
+			{
+				//TODO: Call game over event
+                ChangeStage(GameStage.Lose);
+            }
+                
+        }
 		// Top
 		else if( collision.y < 0 ) {
 			player.IsGrounded = false;
@@ -341,7 +348,8 @@ public class GameLogic : Node2D {
 			player.IsGrounded = false;
 		}
 		player.Position -= collision;
-	}
+        
+    }
 
 	private void ProcessStage(float delta) {
 		timeInStage += delta;
