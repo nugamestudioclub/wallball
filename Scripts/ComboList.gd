@@ -12,12 +12,12 @@ func _ready():
 	for n in get_children():
 		remove_child(n)
 		n.queue_free()
-	for combo in combo_handler.combo_list:
+	for combo in combo_handler.data.combo_list:
 		var combo_item = combo_item_file.instance()
 		combo_items.append(combo_item)
 		add_child(combo_item)
 		combo_item.combo = combo
 
-func _update(combo_compare : Array) -> void:
-	for i in combo_compare.size():
-		combo_items[i].combo_progress = combo_compare[i]
+func _update(combo_data : ComboListData) -> void:
+	for i in combo_data.completion_list.size():
+		combo_items[i].combo_progress = combo_data.completion_list[i]

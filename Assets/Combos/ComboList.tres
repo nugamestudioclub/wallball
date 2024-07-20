@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=12 format=2]
+
+[ext_resource path="res://Assets/Combos/Combo01.tres" type="Resource" id=1]
+[ext_resource path="res://Scripts/ComboListData.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Combos/Combo02.tres" type="Resource" id=3]
+[ext_resource path="res://Assets/Combos/Combo09.tres" type="Resource" id=4]
+[ext_resource path="res://Assets/Combos/Combo10.tres" type="Resource" id=5]
+[ext_resource path="res://Assets/Combos/Combo05.tres" type="Resource" id=6]
+[ext_resource path="res://Assets/Combos/Combo04.tres" type="Resource" id=7]
+[ext_resource path="res://Assets/Combos/Combo06.tres" type="Resource" id=8]
+[ext_resource path="res://Assets/Combos/Combo07.tres" type="Resource" id=9]
+[ext_resource path="res://Assets/Combos/Combo08.tres" type="Resource" id=10]
+[ext_resource path="res://Assets/Combos/Combo03.tres" type="Resource" id=11]
+
+[resource]
+script = ExtResource( 2 )
+combo_list = [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 11 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 4 ), ExtResource( 5 ) ]

@@ -2,34 +2,32 @@ extends Node
 
 class_name ComboHandler
 
-export var combo_list : Array
-
 signal recieved_input(combo_compare)
 
 var cur_inputs : Array
-var combo_compare : Array
+
+export(Resource) var data
 
 func _ready():
-	for c in combo_list:
-		combo_compare.append(0)
+	assert(data is ComboListData)
 
 func accept_input(input : String) -> void:
-	for i in combo_list.size():
-		if combo_compare[i] < combo_list[i].size() and combo_list[i].inputs[combo_compare[i]] == input:
-			combo_compare[i] += 1
-		elif combo_list[i].inputs[0] == input:
-			combo_compare[i] = 1
+	for i in data.combo_list.size():
+		if data.completion_list[i] < data.combo_list[i].size() and data.combo_list[i].inputs[data.completion_list[i]] == input:
+			data.completion_list[i] += 1
+		elif data.combo_list[i].inputs[0] == input:
+			data.completion_list[i] = 1
 		else:
-			combo_compare[i] = 0
-	emit_signal("recieved_input", combo_compare)
+			data.completion_list[i] = 0
+	emit_signal("recieved_input", data)
 
 func confirm_combo() -> Combo:
 	var combo : Combo = Combo.new()
-	for i in combo_list.size():
-		if combo_list[i].size() == combo_compare[i]:
-			combo = combo_list[i]
-		combo_compare[i] = 0
-	emit_signal("recieved_input", combo_compare)
+	for i in data.combo_list.size():
+		if data.combo_list[i].size() == data.completion_list[i]:
+			combo = data.combo_list[i]
+		data.completion_list[i] = 0
+	emit_signal("recieved_input", data)
 	return combo
 
 # TODO For testing, delegate this to the player
