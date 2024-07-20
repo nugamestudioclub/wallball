@@ -66,27 +66,35 @@ public class GameLogic : Node2D {
 		return GetNode<Node2D>("Environment");
 	}
 	public override void _Ready() {
-		ColorRect gArea = GetGameArea();
+
+        wallBounds = gameConfig.WallBounds;
+        serveDuration = gameConfig.ServeDuration;
+        serveTimeFactor = gameConfig.ServeTimeFactor;
+        recoverDuration = gameConfig.RecoverDuration;
+        catchInfluencePercent = gameConfig.CatchInfluence;
+
+
+        ColorRect gArea = GetGameArea();
         gArea.Color = new Color(0, 0, 0, 0);
 		gameArea.Position = gArea.RectGlobalPosition;
 		gameArea.Size = gArea.RectSize;
 
+        
+
         ColorRect dArea = GetDangerArea();
         dArea.Color = new Color(0, 0, 0, 0);
-        dangerArea.Position = dArea.RectGlobalPosition;
-        dangerArea.Size = dArea.RectSize;
-
-        wallBounds = gameConfig.WallBounds;
-		serveDuration = gameConfig.ServeDuration;
-		serveTimeFactor = gameConfig.ServeTimeFactor;
-		recoverDuration = gameConfig.RecoverDuration;
-		catchInfluencePercent = gameConfig.CatchInfluence;
+		var scale = ScreenToPlay(dArea.RectGlobalPosition);
+        var (dPos, dSize) = ScaleRect(dArea.RectGlobalPosition - gameArea.Position, dArea.RectSize, scale);
+		dangerArea.Position = dPos;
+        dangerArea.Size = dSize;
 
 
-		Vector2 screenScale = PlayToScreenScale();
 
 
-		Node2D ballScene = GetBall();
+
+        Vector2 screenScale = PlayToScreenScale();
+
+        Node2D ballScene = GetBall();
 		ballScene.ApplyScale(screenScale);
 		ball.Position = ScreenToPlay(ballScene.Position);
 		ball.Radius = ballConfig.Radius;
@@ -108,14 +116,18 @@ public class GameLogic : Node2D {
 	}
 
 	public override void _Draw() {
-		//var wallColor = new Color(1, 1, 0, .5f);
-		//DrawRect(new Rect2(0, 0, wallBounds), wallColor, filled: true);
+        //var wallColor = new Color(1, 1, 0, .5f);
+        //DrawRect(new Rect2(0, 0, wallBounds), wallColor, filled: true);
 
-		//var colliderColor = new Color(0, 1, 0);
-		//DrawCircle(player.Position, player.Radius, colliderColor);
-		//DrawCircle(ball.Position, ball.Radius, colliderColor);
-	}
-	private Vector2 PlayToScreenScale() {
+
+        var wallColor = new Color(1, 1, 0, .5f);
+        DrawRect(new Rect2(dangerArea.Position.x, dangerArea.Position.x, dangerArea.Size), wallColor, filled: true);
+
+        //var colliderColor = new Color(0, 1, 0);
+        //DrawCircle(player.Position, player.Radius, colliderColor);
+        //DrawCircle(ball.Position, ball.Radius, colliderColor);
+    }
+    private Vector2 PlayToScreenScale() {
 		return new Vector2(gameArea.Size.x / wallBounds.x,
 			gameArea.Size.y / wallBounds.y);
 	}
@@ -129,6 +141,15 @@ public class GameLogic : Node2D {
 			(position.x - gameArea.Position.x) * (wallBounds.x / gameArea.Size.x),
 			(position.y - gameArea.Position.y) * (wallBounds.y / gameArea.Size.y));
 	}
+
+	private (Vector2 position, Vector2 size) ScaleRect(Vector2 position, Vector2 size, Vector2 scale)
+	{
+		Vector2 newPos = new Vector2((position.x - gameArea.Position.x) * scale.x,
+			(position.y - gameArea.Position.y) * scale.y);
+		Vector2 newSize = new Vector2(size.x * scale.x, size.y * scale.y);
+		return (newPos, newSize);
+
+    }
 
 	public override void _Process(float delta) {
 		GetBall().Position = PlayToScreen(ball.Position);
