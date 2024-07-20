@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Wallbounce-Drums.mp3-f61e4e05d8f8db809732dd09c29117fc.mp3str"
+
+[deps]
+
+source_file="res://Assets/Music/Base/Wallbounce-Drums.mp3"
+dest_files=[ "res://.import/Wallbounce-Drums.mp3-f61e4e05d8f8db809732dd09c29117fc.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Assets/Music/Looping/Wallbounce-Base-Looping.mp3" type="AudioStream" id=1]
+[ext_resource path="res://Assets/Music/Looping/Wallbounce-Drums-Looping.mp3" type="AudioStream" id=2]
+[ext_resource path="res://Assets/Music/Looping/Wallbounce-Bass-Looping.mp3" type="AudioStream" id=3]
+[ext_resource path="res://Assets/Music/Looping/Wallbounce-Lead-Looping.mp3" type="AudioStream" id=4]
+[ext_resource path="res://Scripts/musicmanager.gd" type="Script" id=5]
+
+[node name="Music Manager" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="Base" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+autoplay = true
+
+[node name="Drums" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+autoplay = true
+
+[node name="Bass" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+autoplay = true
+
+[node name="Lead" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+autoplay = true

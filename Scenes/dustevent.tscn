@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/DustEvent.gd" type="Script" id=1]
+
+[node name="Dust Event" type="Node2D"]
+position = Vector2( 159, 59 )
+script = ExtResource( 1 )
+dust_color = Color( 0.054902, 1, 0, 1 )

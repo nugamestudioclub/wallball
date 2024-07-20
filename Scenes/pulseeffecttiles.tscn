@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/PulseAndFade.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Tiles/Transparent/tile_0014.png" type="Texture" id=2]
+
+[node name="Pulse Effect" type="Light2D"]
+position = Vector2( 243, -217 )
+scale = Vector2( 4.64111, 4.66016 )
+texture = ExtResource( 2 )
+color = Color( 1, 0.380392, 0, 1 )
+energy = 2.09
+range_height = -37.6
+shadow_enabled = true
+shadow_color = Color( 1, 1, 1, 0 )
+shadow_buffer_size = 32
+shadow_gradient_length = 37.6
+shadow_filter_smooth = 12.9
+shadow_item_cull_mask = 0
+script = ExtResource( 1 )
+starting_color = Color( 1, 0.380392, 0, 1 )
+scale_inc_rate = 0.15
