@@ -60,5 +60,5 @@ func _process(delta):
 		redshift.modulate.a -= 0.01
 		if blueshift.modulate.a <= 0:
 			aberration = 0
-	music_manager.master_max_gain = vol_slider.value # Slider
+	music_manager.master_max_gain = linear2db(vol_slider.value) # Slider
 	pass

@@ -142,9 +142,9 @@ custom_icons/grabber = ExtResource( 9 )
 custom_styles/slider = SubResource( 7 )
 custom_styles/grabber_area_highlight = SubResource( 8 )
 custom_styles/grabber_area = SubResource( 9 )
-min_value = -80.0
-max_value = 0.0
-value = -15.0
+max_value = 1.0
+step = 0.01
+value = 0.7
 
 [node name="RichTextLabel" type="RichTextLabel" parent="UI"]
 margin_left = 163.0
