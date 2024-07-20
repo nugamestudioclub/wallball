@@ -130,7 +130,7 @@ public class GameLogic : Node2D {
 	private void ChangeStage(GameStage stage) {
 		this.stage = stage;
 		timeInStage = 0.0f;
-		input.Clear();
+		input.Finish = false;
 		GD.Print(stage);
 	}
 
