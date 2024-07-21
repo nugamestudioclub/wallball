@@ -134,7 +134,7 @@ z_index = -14
 texture = ExtResource( 3 )
 
 [node name="Music Manager" parent="." instance=ExtResource( 6 )]
-master_max_gain = -10
+master_max_gain = -80
 drum_fade = 0.12
 drum_max_gain = -5
 bass_fade = 0.02
