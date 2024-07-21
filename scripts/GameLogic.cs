@@ -57,6 +57,8 @@ public class GameLogic : Node2D {
 
 	private GameSettings settings;
 
+	private static Random random = new Random();
+
 	private ColorRect GetGameArea() {
 		return GetNode<ColorRect>("PlayArea");
 	}
@@ -448,7 +450,7 @@ public class GameLogic : Node2D {
 
 	private float CalculateComboAngle(string comboName) {
 		if( string.IsNullOrEmpty(comboName) ) {
-			return -90;
+			return -random.Next(180_000) * 0.001f;
 		}
 		switch( comboName[0] ) {
 		case 'A': return -150;
