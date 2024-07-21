@@ -28,7 +28,7 @@ func _ready():
 	blueshift = get_node("Aberration Wall/Blue Shift")
 	redshift = get_node("Aberration Wall/Red Shift")
 	pulser = get_node("Main Wall")
-	game_over()
+	#game_over()
 	pass # Replace with function body.
 	
 	
