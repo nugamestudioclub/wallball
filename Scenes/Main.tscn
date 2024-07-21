@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/Environment.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/GameLogic.cs" type="Script" id=2]
@@ -10,14 +10,13 @@
 [ext_resource path="res://scenes/ComboList.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Combos/ComboList.tres" type="Resource" id=9]
 [ext_resource path="res://scripts/ComboHandler.gd" type="Script" id=10]
-[ext_resource path="res://config/ComboConfig.tres" type="Resource" id=11]
 
 [node name="root" type="Node2D"]
 script = ExtResource( 2 )
 gameConfig = ExtResource( 5 )
 playerConfig = ExtResource( 7 )
 ballConfig = ExtResource( 6 )
-comboConfig = ExtResource( 11 )
+settingsFile = "res://Settings.tres"
 
 [node name="Ball" parent="." instance=ExtResource( 3 )]
 position = Vector2( -90, 90 )

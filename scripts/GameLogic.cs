@@ -49,6 +49,11 @@ public class GameLogic : Node2D {
 	Vector2 catchVector;
 
 	private int score = 0;
+	
+	[Export(PropertyHint.File)]
+	private String settingsFile;
+
+	private GameSettings settings;
 
 	private ColorRect GetGameArea() {
 		return GetNode<ColorRect>("PlayArea");
@@ -70,12 +75,12 @@ public class GameLogic : Node2D {
 		return GetNode<Node2D>("Environment");
 	}
 
-    private Node GetComboHandler()
-    {
-        return GetNode<Node>("ComboHandler");
-    }
+	private Node GetComboHandler()
+	{
+		return GetNode<Node>("ComboHandler");
+	}
 
-    public override void _Ready() {
+	public override void _Ready() {
 
 		wallBounds = gameConfig.WallBounds;
 		serveDuration = gameConfig.ServeDuration;
@@ -118,6 +123,15 @@ public class GameLogic : Node2D {
 		// TODO: Initialize score
 
 		stage = GameStage.Seeking;
+		
+		if (ResourceLoader.Exists(settingsFile)) {
+			settings = ResourceLoader.Load<GameSettings>(settingsFile);
+		}
+		else {
+			settings = new GameSettings();
+		}
+		((Godot.Object)GetEnvironment().Get("vol_slider")).Set("value", settings.volume);
+		((HSlider)GetEnvironment().Get("vol_slider")).Connect("value_changed", this, nameof(_OnVolumeChanged));
 	}
 
 	public override void _Draw() {
@@ -130,11 +144,11 @@ public class GameLogic : Node2D {
 		GetBall().Position = PlayToScreenPosition(ball.Position);
 		GetPlayer().Position = PlayToScreenPosition(player.Position);
 
-        ProcessInput();
+		ProcessInput();
 		ProcessCombo();
 
-        // Redraw
-        Update();
+		// Redraw
+		Update();
 	}
 
 	public override void _PhysicsProcess(float delta) {
@@ -360,25 +374,25 @@ public class GameLogic : Node2D {
 		{
 			return;
 		}
-        string comboInput = GetComboInput();
-        var comboHandler = GetComboHandler();
-        if (comboInput == "_")
+		string comboInput = GetComboInput();
+		var comboHandler = GetComboHandler();
+		if (comboInput == "_")
 		{
-            Godot.Object comboValue = (Godot.Object)comboHandler.Call("confirm_combo");
+			Godot.Object comboValue = (Godot.Object)comboHandler.Call("confirm_combo");
 			int comboScore = (int)comboValue.Get("points");
 			Godot.Collections.Array comboChars = (Godot.Collections.Array)comboValue.Get("inputs");
 			
 			currentComboCode = comboChars.Count > 0 ? (string)comboChars[0] : "";
-            GD.Print($"Combo completed with score: {comboScore}");
+			GD.Print($"Combo completed with score: {comboScore}");
 			score += comboScore;
-            Node2D environment = GetEnvironment();
+			Node2D environment = GetEnvironment();
 			environment.Call("update_score", score.ToString());
 
-        } else if (comboInput != "")
+		} else if (comboInput != "")
 		{
-            comboHandler.Call("accept_input", comboInput);
+			comboHandler.Call("accept_input", comboInput);
 
-        }
+		}
 
 		
 	}
@@ -391,44 +405,44 @@ public class GameLogic : Node2D {
 			input.Up = false;
 			return "W";
 		}
-        if (input.Down)
-        {
-            input.Down = false;
-            return "S";
-        }
-        if (input.Left)
-        {
-            input.Left = false;
-            return "A";
-        }
-        if (input.Right)
-        {
-            input.Right = false;
-            return "D";
-        }
-        if (input.Finish)
-        {
-            return "_";
-        }
+		if (input.Down)
+		{
+			input.Down = false;
+			return "S";
+		}
+		if (input.Left)
+		{
+			input.Left = false;
+			return "A";
+		}
+		if (input.Right)
+		{
+			input.Right = false;
+			return "D";
+		}
+		if (input.Finish)
+		{
+			return "_";
+		}
 		return "";
-    }
+	}
 
 	private float CalculateComboAngle(string comboName)
 	{
 		if (string.IsNullOrEmpty(comboName))
 		{
-            return -90;
-        }
+			return -90;
+		}
 		switch (comboName[0])
 		{
 			case 'A': return -150;
-            case 'W': return -120;
-            case 'S': return -45;
-            case 'D': return -15;
+			case 'W': return -120;
+			case 'S': return -45;
+			case 'D': return -15;
 			default: return -90; 
-        }
+		}
 	}
-    private void ProcessMovement(float delta) {
+	private void ProcessMovement(float delta) {
 		MoveBall(delta);
 		MovePlayer(delta);
 	}
@@ -534,5 +548,15 @@ public class GameLogic : Node2D {
 			wallBounds.x / gameArea.Size.x,
 			wallBounds.y / gameArea.Size.y
 		);
+	}
+	
+	private void _OnVolumeChanged(float newVol) {
+		GD.Print("Changed");
+		settings.volume = newVol;
+		SaveSettings();
+	}
+
+	private void SaveSettings() {
+		ResourceSaver.Save(settingsFile, settings);
 	}
 }
