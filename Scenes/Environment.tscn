@@ -202,7 +202,7 @@ margin_bottom = -61.0
 rect_scale = Vector2( 1.16299, 0.637535 )
 custom_colors/default_color = Color( 0.72549, 0.654902, 0.745098, 1 )
 custom_fonts/normal_font = SubResource( 11 )
-text = "100"
+text = "0"
 
 [node name="Combo List" type="RichTextLabel" parent="UI"]
 margin_left = 162.0

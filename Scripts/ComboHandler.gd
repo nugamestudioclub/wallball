@@ -31,16 +31,3 @@ func confirm_combo() -> Combo:
 	emit_signal("recieved_input", data)
 	emit_signal("scored_points", combo.points)
 	return combo
-
-# TODO For testing, delegate this to the player
-func _process(_delta):
-	if Input.is_action_just_pressed("ui_up"):
-		accept_input("W")
-	if Input.is_action_just_pressed("ui_down"):
-		accept_input("S")
-	if Input.is_action_just_pressed("ui_left"):
-		accept_input("A")
-	if Input.is_action_just_pressed("ui_right"):
-		accept_input("D")
-	if Input.is_action_just_pressed("ui_accept"):
-		print(confirm_combo().inputs)

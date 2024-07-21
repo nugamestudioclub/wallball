@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource( 1 )
 points = 300
-inputs = [ "S", "A", "S", "W", "S", "D" ]
+inputs = [ "S", "A", "S", "W" ]

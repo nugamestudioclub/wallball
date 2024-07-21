@@ -15,6 +15,8 @@ var redshift
 
 var pulser
 
+var score_display
+
 var basedust = load("res://Scenes/dustevent.tscn")
 var pulseeffect = load("res://Scenes/pulseeffecttiles.tscn")
 
@@ -28,9 +30,15 @@ func _ready():
 	blueshift = get_node("Aberration Wall/Blue Shift")
 	redshift = get_node("Aberration Wall/Red Shift")
 	pulser = get_node("Main Wall")
+	score_display = get_node("UI/Score Label")
 	#game_over()
 	pass # Replace with function body.
 	
+	
+func update_score(score): 
+	score_display.text = score
+	pass
+
 func play_wall_hit(index):
 	music_manager.play_wall_hit(index)
 	pass

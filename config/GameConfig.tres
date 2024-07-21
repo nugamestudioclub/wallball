@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 WallBounds = Vector2( 500, 500 )
-ServeDuration = 0.25
-ServeTimeFactor = 0.2
-RecoverDuration = 2.0
+ServeDuration = 1.0
+ServeTimeFactor = 0.25
+RecoverDuration = 1.0
 CatchInfluence = 0.5

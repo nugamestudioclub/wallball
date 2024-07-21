@@ -18,11 +18,14 @@ public class GameLogic : Node2D {
 	[Export]
 	private BallConfig ballConfig;
 
+	[Export]
+	private ComboConfig comboConfig;
+
 	private Player player = new Player();
 
 	private Ball ball = new Ball();
 
-
+	string currentComboCode = "";
 
 	float serveDuration;
 
@@ -45,6 +48,8 @@ public class GameLogic : Node2D {
 
 	Vector2 catchVector;
 
+	private int score = 0;
+
 	private ColorRect GetGameArea() {
 		return GetNode<ColorRect>("PlayArea");
 	}
@@ -64,7 +69,13 @@ public class GameLogic : Node2D {
 	private Node2D GetEnvironment() {
 		return GetNode<Node2D>("Environment");
 	}
-	public override void _Ready() {
+
+    private Node GetComboHandler()
+    {
+        return GetNode<Node>("ComboHandler");
+    }
+
+    public override void _Ready() {
 
 		wallBounds = gameConfig.WallBounds;
 		serveDuration = gameConfig.ServeDuration;
@@ -119,15 +130,18 @@ public class GameLogic : Node2D {
 		GetBall().Position = PlayToScreenPosition(ball.Position);
 		GetPlayer().Position = PlayToScreenPosition(player.Position);
 
-		// Redraw
-		Update();
+        ProcessInput();
+		ProcessCombo();
+
+        // Redraw
+        Update();
 	}
 
 	public override void _PhysicsProcess(float delta) {
 		if( stage == GameStage.Serving )
 			delta *= serveTimeFactor;
 
-		ProcessInput();
+		
 		ProcessState(delta);
 		ProcessMovement(delta);
 		ProcessCollision(delta);
@@ -340,7 +354,81 @@ public class GameLogic : Node2D {
 			input.Finish = false;
 	}
 
-	private void ProcessMovement(float delta) {
+	private void ProcessCombo()
+	{
+		if (stage != GameStage.Serving)
+		{
+			return;
+		}
+        string comboInput = GetComboInput();
+        var comboHandler = GetComboHandler();
+        if (comboInput == "_")
+		{
+            Godot.Object comboValue = (Godot.Object)comboHandler.Call("confirm_combo");
+			int comboScore = (int)comboValue.Get("points");
+			Godot.Collections.Array comboChars = (Godot.Collections.Array)comboValue.Get("inputs");
+			
+			currentComboCode = comboChars.Count > 0 ? (string)comboChars[0] : "";
+            GD.Print($"Combo completed with score: {comboScore}");
+			score += comboScore;
+            Node2D environment = GetEnvironment();
+			environment.Call("update_score", score.ToString());
+
+        } else if (comboInput != "")
+		{
+            comboHandler.Call("accept_input", comboInput);
+
+        }
+
+		
+	}
+
+
+	private string GetComboInput()
+	{
+		if (input.Up)
+		{
+			input.Up = false;
+			return "W";
+		}
+        if (input.Down)
+        {
+            input.Down = false;
+            return "S";
+        }
+        if (input.Left)
+        {
+            input.Left = false;
+            return "A";
+        }
+        if (input.Right)
+        {
+            input.Right = false;
+            return "D";
+        }
+        if (input.Finish)
+        {
+            return "_";
+        }
+		return "";
+    }
+
+	private float CalculateComboAngle(string comboName)
+	{
+		if (string.IsNullOrEmpty(comboName))
+		{
+            return -90;
+        }
+		switch (comboName[0])
+		{
+			case 'A': return -150;
+            case 'W': return -120;
+            case 'S': return -45;
+            case 'D': return -15;
+			default: return -90; 
+        }
+	}
+    private void ProcessMovement(float delta) {
 		MoveBall(delta);
 		MovePlayer(delta);
 	}
@@ -390,7 +478,7 @@ public class GameLogic : Node2D {
 		case GameStage.Serving:
 			if( input.Finish || timeInStage >= serveDuration ) {
 				// TODO: Different combos have different directions
-				float angle = (-15f / 180f) * Mathf.Pi;
+				float angle = (CalculateComboAngle(currentComboCode) / 180f) * Mathf.Pi;
 				ball.Velocity = CalculateThrowVelocity(angle);
 				ChangeStage(GameStage.Recovering);
 			}
