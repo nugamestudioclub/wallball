@@ -43,11 +43,11 @@ func game_start():
 func menu_start():
 	pass
 	
-func play_wall_hit(index)
+func play_wall_hit(index):
 	
 	pass
 	
-func play_combo_hit(index)
+func play_combo_hit(index):
 	
 	pass
 	
