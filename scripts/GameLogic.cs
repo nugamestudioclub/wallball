@@ -113,7 +113,7 @@ public class GameLogic : Node2D {
 		ball.AngularVelocity = ballConfig.AngularVelocity;
 
 		Node2D playerScene = GetPlayer();
-		playerScene.ApplyScale(playToScreenScale);
+		// playerScene.ApplyScale(playToScreenScale);
 		player.Position = ScreenToPlayPosition(playerScene.Position);
 		player.Radius = playerConfig.Radius;
 		player.Gravity = playerConfig.Gravity;
