@@ -97,8 +97,8 @@ public class GameLogic : Node2D {
 
 		ColorRect dangerAreaNode = GetDangerArea();
 		dangerAreaNode.Color = new Color(0, 0, 0, 0);
-		var (dagnerAreaPosition, dangerAreaSize) = ScreenToPlayRect(dangerAreaNode.RectPosition, dangerAreaNode.RectSize);
-		dangerArea.Position = dagnerAreaPosition;
+		var (dangerAreaPosition, dangerAreaSize) = ScreenToPlayRect(dangerAreaNode.RectPosition, dangerAreaNode.RectSize);
+		dangerArea.Position = dangerAreaPosition;
 		dangerArea.Size = dangerAreaSize;
 
 		GD.Print($"danger area pos: {dangerArea.Position}");
@@ -134,11 +134,11 @@ public class GameLogic : Node2D {
 		((HSlider)GetEnvironment().Get("vol_slider")).Connect("value_changed", this, nameof(_OnVolumeChanged));
 	}
 
-	public override void _Draw() {
-		var wallColor = new Color(1, 1, 0, .5f);
-		var (dangerAreaPosition, dangerAreaSize) = PlayToScreenRect(dangerArea.Position, dangerArea.Size);
-		DrawRect(new Rect2(dangerAreaPosition.x, dangerAreaPosition.y, dangerAreaSize), wallColor, filled: true);
-	}
+	//public override void _Draw() {
+	//	var wallColor = new Color(1, 1, 0, .5f);
+	//	var (dangerAreaPosition, dangerAreaSize) = PlayToScreenRect(dangerArea.Position, dangerArea.Size);
+	//	DrawRect(new Rect2(dangerAreaPosition.x, dangerAreaPosition.y, dangerAreaSize), wallColor, filled: true);
+	//}
 
 	public override void _Process(float delta) {
 		GetBall().Position = PlayToScreenPosition(ball.Position);
@@ -168,7 +168,7 @@ public class GameLogic : Node2D {
 
 	private bool CheckCircleRectCollision(Vector2 circlePosition, float circleRadius, Vector2 rectPosition, Vector2 rectSize) {
 		float closestX = Mathf.Clamp(circlePosition.x, rectPosition.x, rectPosition.x + rectSize.x);
-		float closestY = Mathf.Clamp(circlePosition.y, rectPosition.y, rectPosition.y + rectSize.y);
+		float closestY = Mathf.Clamp(circlePosition.y, rectPosition.y, rectPosition.y +- rectSize.y);
 		float distanceX = circlePosition.x - closestX;
 		float distanceY = circlePosition.y - closestY;
 		return (distanceX * distanceX) + (distanceY * distanceY) < (circleRadius * circleRadius);
@@ -290,17 +290,18 @@ public class GameLogic : Node2D {
 	}
 
 	private Vector2 PlayToScreenPosition(Vector2 position) {
+		var scale = PlayToScreenScale();
 		return new Vector2(
-			gameArea.Position.x + gameArea.Size.x / wallBounds.x * position.x,
-			gameArea.Position.y + gameArea.Size.y / wallBounds.y * position.y
+			gameArea.Position.x + (scale.x * position.x),
+			gameArea.Position.y + (scale.y * position.y)
 		);
 	}
 
 	private (Vector2 position, Vector2 size) PlayToScreenRect(Vector2 position, Vector2 size) {
 		var scale = PlayToScreenScale();
 		var scaledPosition = new Vector2(
-			(position.x - gameArea.Position.x) * scale.x,
-			(position.y - gameArea.Position.y) * scale.y
+			gameArea.Position.x + (scale.x * position.x),
+			gameArea.Position.y + (scale.y * position.y)
 		);
 		var scaledSize = new Vector2(size.x * scale.x, size.y * scale.y);
 		return (scaledPosition, scaledSize);
@@ -327,8 +328,7 @@ public class GameLogic : Node2D {
 	private void ProcessBallDangerCollision() {
 		if( CheckCircleRectCollision(ball.Position, ball.Radius, dangerArea.Position, dangerArea.Size) ) {
 			//TODO: Call game over event
-			GD.Print("danger");
-			//ChangeStage(GameStage.Lose);
+			ChangeStage(GameStage.Lose);
 		}
 	}
 
@@ -528,16 +528,18 @@ public class GameLogic : Node2D {
 	}
 
 	private Vector2 ScreenToPlayPosition(Vector2 position) {
+		var scale = ScreenToPlayScale();
 		return new Vector2(
-			(position.x - gameArea.Position.x) * (wallBounds.x / gameArea.Size.x),
-			(position.y - gameArea.Position.y) * (wallBounds.y / gameArea.Size.y));
+			(position.x - gameArea.Position.x) * scale.x,
+			(position.y - gameArea.Position.y) * scale.y
+		);
 	}
 
 	private (Vector2 position, Vector2 size) ScreenToPlayRect(Vector2 position, Vector2 size) {
 		var scale = ScreenToPlayScale();
 		var scaledPosition = new Vector2(
-			gameArea.Position.x + (position.x * scale.x),
-			gameArea.Position.y + (position.y * scale.y)
+			(position.x - gameArea.Position.x) * scale.x,
+			(position.y - gameArea.Position.y) * scale.y
 		);
 		var scaledSize = new Vector2(size.x * scale.x, size.y * scale.y);
 		return (scaledPosition, scaledSize);
