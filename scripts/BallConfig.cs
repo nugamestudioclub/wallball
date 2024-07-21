@@ -9,4 +9,7 @@ public class BallConfig : Resource {
 
 	[Export]
 	public Vector2 InitialVelocity { get; set; }
+
+	[Export]
+	public float AngularVelocity { get; set; }
 }

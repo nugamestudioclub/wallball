@@ -110,6 +110,7 @@ public class GameLogic : Node2D {
 		ball.Radius = ballConfig.Radius;
 		ball.Gravity = ballConfig.Gravity;
 		ball.Velocity = ballConfig.InitialVelocity;
+		ball.AngularVelocity = ballConfig.AngularVelocity;
 
 		Node2D playerScene = GetPlayer();
 		playerScene.ApplyScale(playToScreenScale);
@@ -141,8 +142,12 @@ public class GameLogic : Node2D {
 	//}
 
 	public override void _Process(float delta) {
-		GetBall().Position = PlayToScreenPosition(ball.Position);
-		GetPlayer().Position = PlayToScreenPosition(player.Position);
+		var ballNode = GetBall();
+		ballNode.Position = PlayToScreenPosition(ball.Position);
+		ballNode.Rotate((ball.AngularVelocity / 180f) * Mathf.Pi);
+
+		var playerNode = GetPlayer();
+		playerNode.Position = PlayToScreenPosition(player.Position);
 
 		ProcessInput();
 		ProcessCombo();
