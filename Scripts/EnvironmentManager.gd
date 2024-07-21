@@ -68,7 +68,7 @@ func hit_effect(position):
 func game_reset():
 	jumpintoball.modulate.a = 1
 	gameover.modulate.a = 0
-	infinitymirror.resets()
+	infinitymirror.reset()
 	pass
 	
 func game_start():
