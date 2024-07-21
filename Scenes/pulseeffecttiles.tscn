@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Scripts/PulseAndFade.gd" type="Script" id=1]
+[ext_resource path="res://scripts/PulseAndFade.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Tiles/Transparent/tile_0014.png" type="Texture" id=2]
 
 [node name="Pulse Effect" type="Light2D"]

@@ -90,6 +90,7 @@ ui_down={
 [mono]
 
 project/assembly_name="wallball"
+export/include_scripts_content=true
 
 [physics]
 
