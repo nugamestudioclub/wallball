@@ -300,7 +300,7 @@ public class GameLogic : Node2D {
 		if( CheckCircleRectCollision(ball.Position, ball.Radius, dangerArea.Position, dangerArea.Size) ) {
 			//TODO: Call game over event
 			GD.Print("danger");
-			ChangeStage(GameStage.Lose);
+			//ChangeStage(GameStage.Lose);
 		}
 	}
 
