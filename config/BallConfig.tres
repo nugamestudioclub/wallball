@@ -6,5 +6,5 @@
 script = ExtResource( 1 )
 Radius = 15.0
 Gravity = 200.0
-InitialSpeed = 1000.0
-AngularVelocity = 0.0
+InitialSpeed = 350.0
+AngularVelocity = 1.0
