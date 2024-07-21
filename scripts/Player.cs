@@ -22,6 +22,8 @@ public class Player {
 	public PlayerState State => state;
 	public float TimeInState => timeInState;
 
+	public string CurrentAnimation { get; set; }
+
 	public void ChangeState(PlayerState state) {
 		this.state = state;
 		timeInState = 0f;

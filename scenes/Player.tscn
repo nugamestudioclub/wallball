@@ -71,6 +71,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [ ExtResource( 9 ) ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Character:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
 
 [sub_resource type="Animation" id=1]
 resource_name = "IDLE"
@@ -134,4 +146,4 @@ anims/JUMP = SubResource( 3 )
 anims/WALK = SubResource( 2 )
 
 [node name="Character" type="Sprite" parent="."]
-texture = ExtResource( 10 )
+texture = ExtResource( 9 )

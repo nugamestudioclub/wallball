@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Music/Looping/Wallbounce-Base-Looping.mp3" type="AudioStream" id=1]
 [ext_resource path="res://Assets/Music/Looping/Wallbounce-Drums-Looping.mp3" type="AudioStream" id=2]
@@ -6,6 +6,11 @@
 [ext_resource path="res://Assets/Music/Looping/Wallbounce-Lead-Looping.mp3" type="AudioStream" id=4]
 [ext_resource path="res://Scripts/musicmanager.gd" type="Script" id=5]
 [ext_resource path="res://Assets/SFX/SFX-Ball_Hit1.mp3" type="AudioStream" id=6]
+[ext_resource path="res://Assets/SFX/SFX-Combo1.mp3" type="AudioStream" id=7]
+[ext_resource path="res://Assets/SFX/SFX-Combo2.mp3" type="AudioStream" id=8]
+[ext_resource path="res://Assets/SFX/SFX-Ball_Hit3.mp3" type="AudioStream" id=9]
+[ext_resource path="res://Assets/SFX/SFX-Combo3.mp3" type="AudioStream" id=10]
+[ext_resource path="res://Assets/SFX/SFX-Ball_Hit2.mp3" type="AudioStream" id=11]
 
 [node name="Music Manager" type="Node2D"]
 script = ExtResource( 5 )
@@ -30,11 +35,16 @@ autoplay = true
 stream = ExtResource( 6 )
 
 [node name="SFX2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 11 )
 
 [node name="SFX3" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 9 )
 
 [node name="SFX4" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
 
 [node name="SFX5" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
 
 [node name="SFX6" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 10 )

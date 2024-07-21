@@ -11,5 +11,5 @@ dest_files=[ "res://.import/SFX-Ball_Hit5.mp3-ec192d8534dad699d747bd6b35a437f9.m
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

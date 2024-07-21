@@ -21,6 +21,7 @@ func anim_walk_left():
 	pass
 	
 func anim_walk_right():
+	self.scale.x = 1
 	animplayer.play("WALK")
 	pass
 	

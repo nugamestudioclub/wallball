@@ -59,7 +59,7 @@ func game_over():
 func play_wall_hit(index):
 	if index % 3 == 1:
 		SFX1.play()
-	elif index % 3 == 1:
+	elif index % 3 == 2:
 		SFX2.play()
 	else:
 		SFX3.play()
@@ -68,7 +68,7 @@ func play_wall_hit(index):
 func play_combo_hit(index):
 	if index % 3 == 1:
 		SFX4.play()
-	elif index % 3 == 1:
+	elif index % 3 == 2:
 		SFX5.play()
 	else:
 		SFX6.play()
@@ -89,12 +89,12 @@ func change_global_max_gain(newgain):
 func _process(delta):
 	base.volume_db = master_max_gain
 	
-	SFX1.volume_db = master_max_gain - 20
-	SFX2.volume_db = master_max_gain - 20
-	SFX3.volume_db = master_max_gain - 20
-	SFX4.volume_db = master_max_gain - 20
-	SFX5.volume_db = master_max_gain - 20
-	SFX6.volume_db = master_max_gain - 20
+	SFX1.volume_db = master_max_gain - 15
+	SFX2.volume_db = master_max_gain - 15
+	SFX3.volume_db = master_max_gain - 15
+	SFX4.volume_db = master_max_gain - 15
+	SFX5.volume_db = master_max_gain - 15
+	SFX6.volume_db = master_max_gain - 15
 	
 	drums.volume_db += drum_fade
 	if drums.volume_db >= master_max_gain + drum_max_gain:
