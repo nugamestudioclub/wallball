@@ -31,6 +31,7 @@ func _ready():
 	redshift = get_node("Aberration Wall/Red Shift")
 	pulser = get_node("Main Wall")
 	score_display = get_node("UI/Score Label")
+	game_reset()
 	#game_over()
 	pass # Replace with function body.
 	
@@ -47,7 +48,16 @@ func play_combo_hit(index):
 	music_manager.play_combo_hit(index)
 	pass
 	
-func game_over():
+func hit_effect():
+	pass
+	
+func game_reset():
+	pass
+	
+func game_start():
+	pass
+	
+func game_over(score):
 	pulser.game_over()
 	pass
 

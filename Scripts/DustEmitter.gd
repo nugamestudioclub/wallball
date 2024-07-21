@@ -16,6 +16,7 @@ export var x_pos_start_min = 0
 export var x_pos_start_max = 0
 export var y_pos_offset = 0
 export var dust_color = Color(1,1,1,1)
+export var toplvl : bool = false
 
 var basedust = load("res://Scenes/basedust.tscn")
 
@@ -43,5 +44,8 @@ func _process(delta):
 		d.y_rate = rand_range(y_min_rate,y_max_rate)
 		d.position.x = rand_range(x_pos_start_min, x_pos_start_max)
 		d.position.y = y_pos_offset
+		if toplvl:
+			d.toplvl=toplvl
+			d.position = self.get_parent().position
 		add_child(d)
 	pass

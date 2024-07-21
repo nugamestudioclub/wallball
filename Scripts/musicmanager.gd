@@ -9,6 +9,8 @@ var base
 var drums
 var bass
 var lead
+var SFX1
+var SFX2
 
 export var master_max_gain = 0
 export var master_min_gain = -80
@@ -27,6 +29,7 @@ func _ready():
 	drums = get_node("Drums")
 	bass = get_node("Bass")
 	lead = get_node("Lead")
+	SFX1 = get_node("SFX1")
 	base.play()
 	drums.play()
 	bass.play()
@@ -44,7 +47,10 @@ func menu_start():
 	pass
 	
 func play_wall_hit(index):
-	
+	if index % 2 == 1:
+		SFX1.play()
+	else:
+		SFX2.play()
 	pass
 	
 func play_combo_hit(index):
@@ -65,6 +71,7 @@ func change_global_max_gain(newgain):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	base.volume_db = master_max_gain
+	SFX1.volume_db = master_max_gain - 20
 	drums.volume_db += drum_fade
 	if drums.volume_db >= master_max_gain + drum_max_gain:
 		drums.volume_db = master_max_gain + drum_max_gain

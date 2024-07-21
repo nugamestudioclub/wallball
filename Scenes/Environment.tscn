@@ -234,7 +234,7 @@ margin_right = -180.0
 margin_bottom = -158.0
 custom_colors/font_color = Color( 0.403922, 0.286275, 0.501961, 1 )
 custom_fonts/font = SubResource( 12 )
-text = "S=Right"
+text = "D=Right"
 
 [node name="SeqLeft" type="Label" parent="UI"]
 margin_left = -222.0
@@ -243,7 +243,7 @@ margin_right = -180.0
 margin_bottom = -193.0
 custom_colors/font_color = Color( 0.403922, 0.286275, 0.501961, 1 )
 custom_fonts/font = SubResource( 12 )
-text = "W=Left"
+text = "A=Left"
 
 [node name="SpaceeqJump" type="Label" parent="UI"]
 margin_left = -222.0

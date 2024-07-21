@@ -1,9 +1,20 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://scenes/dustemitter.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Tiles/Transparent/tile_0369.png" type="Texture" id=2]
 
 [node name="Ball" type="Node2D"]
 
 [node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 1 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
+
+[node name="Dust Emitter" parent="." instance=ExtResource( 1 )]
+scale_max = 0.5
+decay_rate = 0.005
+x_min_rate = -0.4
+x_max_rate = 0.4
+y_min_rate = -0.4
+y_max_rate = 0.4
+dust_color = Color( 0.87451, 0.87451, 0.87451, 1 )
+toplvl = true
