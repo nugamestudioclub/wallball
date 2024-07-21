@@ -35,7 +35,7 @@ public class GameLogic : Node2D {
 	private Vector2 wallBounds;
 
 	private PlayArea gameArea = new PlayArea();
-	private PlayArea dangerArea = new PlayArea();
+    private PlayArea dangerArea = new PlayArea();
 
 	private readonly PlayerInput input = new PlayerInput();
 
@@ -49,11 +49,12 @@ public class GameLogic : Node2D {
 		return GetNode<ColorRect>("PlayArea");
 	}
 
-	private ColorRect GetDangerArea() {
-		return GetNode<ColorRect>("DangerArea");
-	}
+    private ColorRect GetDangerArea()
+    {
+        return GetNode<ColorRect>("DangerArea");
+    }
 
-	private Node2D GetBall() {
+    private Node2D GetBall() {
 		return GetNode<Node2D>("Ball");
 	}
 
@@ -66,34 +67,34 @@ public class GameLogic : Node2D {
 	}
 	public override void _Ready() {
 
-		wallBounds = gameConfig.WallBounds;
-		serveDuration = gameConfig.ServeDuration;
-		serveTimeFactor = gameConfig.ServeTimeFactor;
-		recoverDuration = gameConfig.RecoverDuration;
-		catchInfluencePercent = gameConfig.CatchInfluence;
+        wallBounds = gameConfig.WallBounds;
+        serveDuration = gameConfig.ServeDuration;
+        serveTimeFactor = gameConfig.ServeTimeFactor;
+        recoverDuration = gameConfig.RecoverDuration;
+        catchInfluencePercent = gameConfig.CatchInfluence;
 
 
-		ColorRect gArea = GetGameArea();
-		gArea.Color = new Color(0, 0, 0, 0);
+        ColorRect gArea = GetGameArea();
+        gArea.Color = new Color(0, 0, 0, 0);
 		gameArea.Position = gArea.RectGlobalPosition;
 		gameArea.Size = gArea.RectSize;
 
+        
+
+        ColorRect dArea = GetDangerArea();
+        dArea.Color = new Color(0, 0, 0, 0);
+		var scale = ScreenToPlay(dArea.RectGlobalPosition);
+        var (dPos, dSize) = ScaleRect(dArea.RectGlobalPosition - gameArea.Position, dArea.RectSize, scale);
+		dangerArea.Position = dPos;
+        dangerArea.Size = dSize;
 
 
-		ColorRect dangerAreaNode = GetDangerArea();
-		dangerAreaNode.Color = new Color(0, 0, 0, 0);
-		var scale = ScreenToPlay(dangerAreaNode.RectGlobalPosition);
-		var (dangerAreaPosition, dangerAreaSize) = ScaleRect(dangerAreaNode.RectGlobalPosition - gameArea.Position, dangerAreaNode.RectSize, scale);
-		dangerArea.Position = dangerAreaPosition + gameArea.Position;
-		dangerArea.Size = dangerAreaSize;
 
 
 
+        Vector2 screenScale = PlayToScreenScale();
 
-
-		Vector2 screenScale = PlayToScreenScale();
-
-		Node2D ballScene = GetBall();
+        Node2D ballScene = GetBall();
 		ballScene.ApplyScale(screenScale);
 		ball.Position = ScreenToPlay(ballScene.Position);
 		ball.Radius = ballConfig.Radius;
@@ -115,18 +116,18 @@ public class GameLogic : Node2D {
 	}
 
 	public override void _Draw() {
-		//var wallColor = new Color(1, 1, 0, .5f);
-		//DrawRect(new Rect2(0, 0, wallBounds), wallColor, filled: true);
+        //var wallColor = new Color(1, 1, 0, .5f);
+        //DrawRect(new Rect2(0, 0, wallBounds), wallColor, filled: true);
 
 
-		var wallColor = new Color(1, 1, 0, .5f);
-		DrawRect(new Rect2(dangerArea.Position.x, dangerArea.Position.x, dangerArea.Size), wallColor, filled: true);
+        var wallColor = new Color(1, 1, 0, .5f);
+        DrawRect(new Rect2(dangerArea.Position.x, dangerArea.Position.x, dangerArea.Size), wallColor, filled: true);
 
-		//var colliderColor = new Color(0, 1, 0);
-		//DrawCircle(player.Position, player.Radius, colliderColor);
-		//DrawCircle(ball.Position, ball.Radius, colliderColor);
-	}
-	private Vector2 PlayToScreenScale() {
+        //var colliderColor = new Color(0, 1, 0);
+        //DrawCircle(player.Position, player.Radius, colliderColor);
+        //DrawCircle(ball.Position, ball.Radius, colliderColor);
+    }
+    private Vector2 PlayToScreenScale() {
 		return new Vector2(gameArea.Size.x / wallBounds.x,
 			gameArea.Size.y / wallBounds.y);
 	}
@@ -141,15 +142,14 @@ public class GameLogic : Node2D {
 			(position.y - gameArea.Position.y) * (wallBounds.y / gameArea.Size.y));
 	}
 
-	private (Vector2 position, Vector2 size) ScaleRect(Vector2 position, Vector2 size, Vector2 scale) {
-		Vector2 newPosition = new Vector2(
-			(position.x - gameArea.Position.x) * scale.x,
-			(position.y - gameArea.Position.y) * scale.y
-		);
+	private (Vector2 position, Vector2 size) ScaleRect(Vector2 position, Vector2 size, Vector2 scale)
+	{
+		Vector2 newPos = new Vector2((position.x - gameArea.Position.x) * scale.x,
+			(position.y - gameArea.Position.y) * scale.y);
 		Vector2 newSize = new Vector2(size.x * scale.x, size.y * scale.y);
-		return (newPosition, newSize);
+		return (newPos, newSize);
 
-	}
+    }
 
 	public override void _Process(float delta) {
 		GetBall().Position = PlayToScreen(ball.Position);
@@ -174,13 +174,16 @@ public class GameLogic : Node2D {
 		return position2.DistanceSquaredTo(position1) < (radius1 + radius2) * (radius1 + radius2);
 	}
 
-	private bool CheckCircleRectCollision(Vector2 circlePosition, float circleRadius, Vector2 rectPosition, Vector2 rectSize) {
-		float closestX = Mathf.Clamp(circlePosition.x, rectPosition.x, rectPosition.x + rectSize.x);
-		float closestY = Mathf.Clamp(circlePosition.y, rectPosition.y, rectPosition.y + rectSize.y);
-		float distanceX = circlePosition.x - closestX;
-		float distanceY = circlePosition.y - closestY;
-		return (distanceX * distanceX) + (distanceY * distanceY) < (circleRadius * circleRadius);
-	}
+	private bool CheckCircleRectCollision(Vector2 circlePos, float radius, Vector2 rectPos, Vector2 rectSize)
+	{
+		float closestX = Mathf.Clamp(circlePos.x, rectPos.x, rectPos.x + rectSize.x);
+		float closestY = Mathf.Clamp(circlePos.y, rectPos.y, rectPos.y + rectSize.y);
+
+        float distanceX = circlePos.x - closestX;
+        float distanceY = circlePos.y - closestY;
+
+        return (distanceX * distanceX) + (distanceY * distanceY) < (radius * radius);
+    }
 
 	Vector2 CalculateCircleContactPoint(Vector2 position, float radius, Vector2 collision) {
 		if( collision.x == 0 ) {
@@ -284,7 +287,7 @@ public class GameLogic : Node2D {
 
 	private void MovePlayer(float delta) {
 		player.PreviousPosition = player.Position;
-		if( stage != GameStage.Serving && stage != GameStage.Lose ) {
+		if( stage != GameStage.Serving && stage != GameStage.Lose) {
 			float vx = (Convert.ToSingle(input.Right) - Convert.ToSingle(input.Left)) * player.MoveSpeed;
 			float vy = IsStartingJump(player)
 				? -player.JumpSpeed
@@ -308,20 +311,22 @@ public class GameLogic : Node2D {
 		HandleBallWallContact(collision);
 	}
 
-	private void ProcessBallDangerCollision() {
-		if( CheckCircleRectCollision(ball.Position, ball.Radius, dangerArea.Position, dangerArea.Size) ) {
+	private void ProcessBallDangerCollision()
+	{
+		if (CheckCircleRectCollision(ball.Position, ball.Radius, dangerArea.Position, dangerArea.Size))
+		{
 			//TODO: Call game over event
-			ChangeStage(GameStage.Lose);
+                ChangeStage(GameStage.Lose);
 		}
 	}
 
 
-	private void ProcessCollision(float delta) {
-		ProcessBallDangerCollision();
-		ProcessBallWallCollision();
+    private void ProcessCollision(float delta) {
+        ProcessBallDangerCollision();
+        ProcessBallWallCollision();
 		ProcessPlayerWallCollision();
 		ProcessPlayerBallCollision();
-
+		
 	}
 
 	private void ProcessInput() {
@@ -360,7 +365,7 @@ public class GameLogic : Node2D {
 		var areColliding = CheckCircleCircleCollision(player.Position, player.Radius, ball.Position, ball.Radius);
 		switch( stage ) {
 		case GameStage.Seeking:
-			if( areColliding && !player.IsGrounded ) {
+			if( areColliding && !player.IsGrounded) {
 				catchVector = ball.Position - player.Position;
 				ChangeStage(GameStage.Serving);
 			}
@@ -375,12 +380,13 @@ public class GameLogic : Node2D {
 		// Bottom
 		if( collision.y > 0 ) {
 			player.IsGrounded = true;
-			if( stage == GameStage.Serving ) {
+            if (stage == GameStage.Serving)
+			{
 				//TODO: Call game over event
-				ChangeStage(GameStage.Lose);
-			}
-
-		}
+                ChangeStage(GameStage.Lose);
+            }
+                
+        }
 		// Top
 		else if( collision.y < 0 ) {
 			player.IsGrounded = false;
@@ -391,8 +397,8 @@ public class GameLogic : Node2D {
 			player.IsGrounded = false;
 		}
 		player.Position -= collision;
-
-	}
+        
+    }
 
 	private void ProcessStage(float delta) {
 		timeInStage += delta;
@@ -403,7 +409,7 @@ public class GameLogic : Node2D {
 				// TODO: Different combos have different directions
 				float angle = (-15f / 180f) * Mathf.Pi;
 				ball.Velocity = CalculateThrowVelocity(angle);
-				ChangeStage(GameStage.Recovering);
+                ChangeStage(GameStage.Recovering);
 			}
 			break;
 		case GameStage.Recovering:
@@ -413,11 +419,12 @@ public class GameLogic : Node2D {
 		}
 	}
 
-	private Vector2 CalculateThrowVelocity(float angle) {
-		var throwDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-		var catchDirection = new Vector2(catchVector.x, Mathf.Min(catchVector.y, 0f)).Normalized();
-		return (catchDirection * catchInfluencePercent + throwDirection).Normalized() * ball.Velocity.Length();
-	}
+	private Vector2 CalculateThrowVelocity(float angle)
+	{
+        var throwDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+        var catchDirection = new Vector2(catchVector.x, Mathf.Min(catchVector.y, 0f)).Normalized();
+        return (catchDirection * catchInfluencePercent + throwDirection).Normalized() * ball.Velocity.Length();
+    }
 
 	private void ProcessState(float delta) {
 		if( IsMoving(player) && player.State != PlayerState.Moving ) {
