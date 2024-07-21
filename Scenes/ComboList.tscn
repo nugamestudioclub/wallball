@@ -6,6 +6,7 @@
 [node name="ComboList" type="VBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_constants/separation = -4
 script = ExtResource( 2 )
 combo_item_file = ExtResource( 1 )
 
@@ -13,4 +14,5 @@ combo_item_file = ExtResource( 1 )
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 1280.0
-margin_bottom = 14.0
+margin_bottom = 24.0
+custom_constants/separation = 0

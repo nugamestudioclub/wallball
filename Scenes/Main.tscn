@@ -51,6 +51,8 @@ margin_right = 40.0
 margin_bottom = 40.0
 
 [node name="ComboList" parent="Control" instance=ExtResource( 8 )]
-margin_right = 32.0
-margin_bottom = 14.0
+margin_left = 161.0
+margin_top = -89.0
+margin_right = 193.0
+margin_bottom = -81.0
 combo_handler_path = NodePath("../../ComboHandler")
