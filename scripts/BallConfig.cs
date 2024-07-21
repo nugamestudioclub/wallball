@@ -8,7 +8,7 @@ public class BallConfig : Resource {
 	public float Gravity { get; set; } = 1000.0f;
 
 	[Export]
-	public Vector2 InitialVelocity { get; set; }
+	public float InitialSpeed { get; set; } = 1000.0f;
 
 	[Export]
 	public float AngularVelocity { get; set; }

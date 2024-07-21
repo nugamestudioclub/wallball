@@ -49,9 +49,11 @@ public class GameLogic : Node2D {
 	Vector2 catchVector;
 
 	private int score = 0;
-	
+
+	bool hasStarted;
+
 	[Export(PropertyHint.File)]
-	private String settingsFile;
+	private string settingsFile;
 
 	private GameSettings settings;
 
@@ -75,13 +77,11 @@ public class GameLogic : Node2D {
 		return GetNode<Node2D>("Environment");
 	}
 
-	private Node GetComboHandler()
-	{
+	private Node GetComboHandler() {
 		return GetNode<Node>("ComboHandler");
 	}
 
 	public override void _Ready() {
-
 		wallBounds = gameConfig.WallBounds;
 		serveDuration = gameConfig.ServeDuration;
 		serveTimeFactor = gameConfig.ServeTimeFactor;
@@ -93,39 +93,13 @@ public class GameLogic : Node2D {
 		gameArea.Position = gameAreaNode.RectGlobalPosition;
 		gameArea.Size = gameAreaNode.RectSize;
 
-		Vector2 playToScreenScale = PlayToScreenScale();
-
 		ColorRect dangerAreaNode = GetDangerArea();
 		dangerAreaNode.Color = new Color(0, 0, 0, 0);
 		var (dangerAreaPosition, dangerAreaSize) = ScreenToPlayRect(dangerAreaNode.RectPosition, dangerAreaNode.RectSize);
 		dangerArea.Position = dangerAreaPosition;
 		dangerArea.Size = dangerAreaSize;
 
-		GD.Print($"danger area pos: {dangerArea.Position}");
-		GD.Print($"game area pos: {gameArea.Position}");
-
-		Node2D ballScene = GetBall();
-		ballScene.ApplyScale(playToScreenScale);
-		ball.Position = ScreenToPlayPosition(ballScene.Position);
-		ball.Radius = ballConfig.Radius;
-		ball.Gravity = ballConfig.Gravity;
-		ball.Velocity = ballConfig.InitialVelocity;
-		ball.AngularVelocity = ballConfig.AngularVelocity;
-
-		Node2D playerScene = GetPlayer();
-		// playerScene.ApplyScale(playToScreenScale);
-		player.Position = ScreenToPlayPosition(playerScene.Position);
-		player.Radius = playerConfig.Radius;
-		player.Gravity = playerConfig.Gravity;
-		player.JumpDuration = playerConfig.JumpDuration;
-		player.JumpSpeed = playerConfig.JumpSpeed;
-		player.MoveSpeed = playerConfig.MoveSpeed;
-
-		// TODO: Initialize score
-
-		stage = GameStage.Seeking;
-		
-		if (ResourceLoader.Exists(settingsFile)) {
+		if( ResourceLoader.Exists(settingsFile) ) {
 			settings = ResourceLoader.Load<GameSettings>(settingsFile);
 		}
 		else {
@@ -133,6 +107,27 @@ public class GameLogic : Node2D {
 		}
 		((Godot.Object)GetEnvironment().Get("vol_slider")).Set("value", settings.volume);
 		((HSlider)GetEnvironment().Get("vol_slider")).Connect("value_changed", this, nameof(_OnVolumeChanged));
+
+		Vector2 playToScreenScale = PlayToScreenScale();
+
+		var ballNode = GetBall();
+		ball.InitialPosition = ScreenToPlayPosition(ballNode.Position);
+		ballNode.ApplyScale(playToScreenScale);
+		ball.Radius = ballConfig.Radius;
+		ball.Gravity = ballConfig.Gravity;
+		ball.AngularVelocity = ballConfig.AngularVelocity;
+
+
+		var playerNode = GetPlayer();
+		player.Position = ScreenToPlayPosition(playerNode.Position);
+		player.Radius = playerConfig.Radius;
+		player.Gravity = playerConfig.Gravity;
+		player.JumpDuration = playerConfig.JumpDuration;
+		player.JumpSpeed = playerConfig.JumpSpeed;
+		player.MoveSpeed = playerConfig.MoveSpeed;
+
+		Initialize();
+		Reset();
 	}
 
 	//public override void _Draw() {
@@ -160,7 +155,7 @@ public class GameLogic : Node2D {
 		if( stage == GameStage.Serving )
 			delta *= serveTimeFactor;
 
-		
+
 		ProcessState(delta);
 		ProcessMovement(delta);
 		ProcessCollision(delta);
@@ -212,22 +207,47 @@ public class GameLogic : Node2D {
 
 	private void ChangeStage(GameStage stage) {
 		Node2D environment = GetEnvironment();
-		if( stage == GameStage.Serving ) {
-			environment.Call("begin_aberration");
-		}
-		else if( this.stage == GameStage.Serving ) {
+
+		switch( this.stage ) {
+		case GameStage.Serving:
 			environment.Call("backpedal_aberration");
+			break;
+		case GameStage.Lose:
+			Reset();
+			break;
 		}
+
+		switch( stage ) {
+		case GameStage.Serving:
+			environment.Call("begin_aberration");
+			if( !hasStarted ) {
+				Start();
+			}
+			break;
+		case GameStage.Lose:
+			GameOver();
+			break;
+		}
+
+		input.Finish = false;
+
 		this.stage = stage;
 		timeInStage = 0.0f;
-		input.Finish = false;
-		//GD.Print(stage);
 	}
 
 	private float G(Player player) {
 		return player.State == PlayerState.Jumping
 			? player.Gravity * (player.TimeInState / player.JumpDuration)
 			: player.Gravity;
+	}
+
+	private void GameOver() {
+		var environment = GetEnvironment();
+		environment.Call("game_over", 0.ToString()); // TODO: pass high score
+
+		Initialize();
+
+		hasStarted = false;
 	}
 
 	private void HandleBallWallContact(Vector2 collision) {
@@ -244,6 +264,11 @@ public class GameLogic : Node2D {
 		environment.Call("pulse_effect", PlayToScreenPosition(point));
 		environment.Call("spawn_particles", PlayToScreenPosition(point), ball.Velocity);
 
+	}
+
+	private void Initialize() {
+		ball.Position = ball.InitialPosition;
+		ball.Velocity = Vector2.Zero;
 	}
 
 	private bool IsFalling(Player player) {
@@ -269,18 +294,16 @@ public class GameLogic : Node2D {
 	}
 
 	private void MoveBall(float delta) {
-		ball.PreviousPosition = ball.Position;
 		if( stage == GameStage.Serving ) {
 			ball.Position = player.Position;
 		}
-		else {
+		else if( hasStarted ) {
 			ball.Velocity += new Vector2(0, ball.Gravity) * delta;
 			ball.Position += ball.Velocity * delta;
 		}
 	}
 
 	private void MovePlayer(float delta) {
-		player.PreviousPosition = player.Position;
 		if( stage != GameStage.Serving && stage != GameStage.Lose ) {
 			float vx = (Convert.ToSingle(input.Right) - Convert.ToSingle(input.Left)) * player.MoveSpeed;
 			float vy = IsStartingJump(player)
@@ -373,78 +396,66 @@ public class GameLogic : Node2D {
 			input.Finish = false;
 	}
 
-	private void ProcessCombo()
-	{
-		if (stage != GameStage.Serving)
-		{
+	private void ProcessCombo() {
+		if( stage != GameStage.Serving ) {
 			return;
 		}
 		string comboInput = GetComboInput();
 		var comboHandler = GetComboHandler();
-		if (comboInput == "_")
-		{
+		if( comboInput == "_" ) {
 			Godot.Object comboValue = (Godot.Object)comboHandler.Call("confirm_combo");
 			int comboScore = (int)comboValue.Get("points");
 			Godot.Collections.Array comboChars = (Godot.Collections.Array)comboValue.Get("inputs");
-			
+
 			currentComboCode = comboChars.Count > 0 ? (string)comboChars[0] : "";
 			GD.Print($"Combo completed with score: {comboScore}");
 			score += comboScore;
 			Node2D environment = GetEnvironment();
 			environment.Call("update_score", score.ToString());
 
-		} else if (comboInput != "")
-		{
+		}
+		else if( comboInput != "" ) {
 			comboHandler.Call("accept_input", comboInput);
 
 		}
 
-		
+
 	}
 
 
-	private string GetComboInput()
-	{
-		if (input.Up)
-		{
+	private string GetComboInput() {
+		if( input.Up ) {
 			input.Up = false;
 			return "W";
 		}
-		if (input.Down)
-		{
+		if( input.Down ) {
 			input.Down = false;
 			return "S";
 		}
-		if (input.Left)
-		{
+		if( input.Left ) {
 			input.Left = false;
 			return "A";
 		}
-		if (input.Right)
-		{
+		if( input.Right ) {
 			input.Right = false;
 			return "D";
 		}
-		if (input.Finish)
-		{
+		if( input.Finish ) {
 			return "_";
 		}
 		return "";
 	}
 
-	private float CalculateComboAngle(string comboName)
-	{
-		if (string.IsNullOrEmpty(comboName))
-		{
+	private float CalculateComboAngle(string comboName) {
+		if( string.IsNullOrEmpty(comboName) ) {
 			return -90;
 		}
-		switch (comboName[0])
-		{
-			case 'A': return -150;
-			case 'W': return -120;
-			case 'S': return -45;
-			case 'D': return -15;
-			default: return -90; 
+		switch( comboName[0] ) {
+		case 'A': return -150;
+		case 'W': return -120;
+		case 'S': return -45;
+		case 'D': return -15;
+		default: return -90;
 		}
 	}
 	private void ProcessMovement(float delta) {
@@ -496,7 +507,6 @@ public class GameLogic : Node2D {
 		switch( stage ) {
 		case GameStage.Serving:
 			if( input.Finish || timeInStage >= serveDuration ) {
-				// TODO: Different combos have different directions
 				float angle = (CalculateComboAngle(currentComboCode) / 180f) * Mathf.Pi;
 				ball.Velocity = CalculateThrowVelocity(angle);
 				ChangeStage(GameStage.Recovering);
@@ -506,13 +516,18 @@ public class GameLogic : Node2D {
 			if( timeInStage >= recoverDuration )
 				ChangeStage(GameStage.Seeking);
 			break;
+		case GameStage.Lose:
+			if( input.Finish )
+				ChangeStage(GameStage.Seeking);
+			break;
 		}
 	}
 
 	private Vector2 CalculateThrowVelocity(float angle) {
+		var magnitude = Mathf.Max(ball.Velocity.Length(), ballConfig.InitialSpeed);
 		var throwDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 		var catchDirection = new Vector2(catchVector.x, Mathf.Min(catchVector.y, 0f)).Normalized();
-		return (catchDirection * catchInfluencePercent + throwDirection).Normalized() * ball.Velocity.Length();
+		return (catchDirection * catchInfluencePercent + throwDirection).Normalized() * magnitude;
 	}
 
 	private void ProcessState(float delta) {
@@ -530,6 +545,15 @@ public class GameLogic : Node2D {
 			player.ChangeState(PlayerState.Jumping);
 		}
 		player.UpdateState(delta);
+	}
+
+	private void Reset() {
+		var environment = GetEnvironment();
+		environment.Call("game_reset");
+
+		stage = GameStage.Seeking;
+
+		score = 0;
 	}
 
 	private Vector2 ScreenToPlayPosition(Vector2 position) {
@@ -556,7 +580,13 @@ public class GameLogic : Node2D {
 			wallBounds.y / gameArea.Size.y
 		);
 	}
-	
+
+	private void Start() {
+		var environment = GetEnvironment();
+		environment.Call("game_start");
+		hasStarted = true;
+	}
+
 	private void _OnVolumeChanged(float newVol) {
 		GD.Print("Changed");
 		settings.volume = newVol;

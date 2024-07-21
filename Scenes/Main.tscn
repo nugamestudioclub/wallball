@@ -21,10 +21,9 @@ comboConfig = ExtResource( 11 )
 settingsFile = "res://Settings.tres"
 
 [node name="Ball" parent="." instance=ExtResource( 3 )]
-position = Vector2( -90, 90 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 50, 50 )
+position = Vector2( 0, 100 )
 
 [node name="Environment" parent="." instance=ExtResource( 1 )]
 

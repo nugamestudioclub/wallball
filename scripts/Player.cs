@@ -12,7 +12,6 @@ public class Player {
 	private float timeInState;
 
 	public float Radius { get; set; }
-	public Vector2 PreviousPosition { get; set; }
 	public Vector2 Position { get; set; }
 	public Vector2 Velocity { get; set; }
 	public float Gravity { get; set; }
