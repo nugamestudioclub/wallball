@@ -43,6 +43,14 @@ func game_start():
 func menu_start():
 	pass
 	
+func play_wall_hit(index)
+	
+	pass
+	
+func play_combo_hit(index)
+	
+	pass
+	
 func change_global_max_gain(newgain):
 	base.volume_db = master_max_gain
 	if drum_fade != 0:
