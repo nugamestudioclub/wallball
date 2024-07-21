@@ -16,6 +16,12 @@ var redshift
 var pulser
 
 var score_display
+var hi_score_display
+
+var jumpintoball
+var gameover
+
+var infinitymirror
 
 var basedust = load("res://Scenes/dustevent.tscn")
 var pulseeffect = load("res://Scenes/pulseeffecttiles.tscn")
@@ -31,8 +37,11 @@ func _ready():
 	redshift = get_node("Aberration Wall/Red Shift")
 	pulser = get_node("Main Wall")
 	score_display = get_node("UI/Score Label")
+	hi_score_display = get_node("UI/HiScore Label")
+	jumpintoball = get_node("UI/JumpIntoTheBall")
+	gameover = get_node("UI/JumpIntoTheBall")
+	infinitymirror = get_node("Infinity Mirror")
 	game_reset()
-	#game_over()
 	pass # Replace with function body.
 	
 	
@@ -48,17 +57,33 @@ func play_combo_hit(index):
 	music_manager.play_combo_hit(index)
 	pass
 	
-func hit_effect():
+func hit_effect(position):
+	var d = basedust.instance()
+	d.position = position
+	d.quantity = 4
+	d.dust_color = pulser.cur_color
+	add_child(d)
 	pass
 	
 func game_reset():
+	jumpintoball.modulate.a = 1
+	gameover.modulate.a = 0
+	infinitymirror.resets()
 	pass
 	
 func game_start():
+	jumpintoball.modulate.a = 0
+	gameover.modulate.a = 0
+	music_manager.game_start()
+	infinitymirror.start()
 	pass
 	
 func game_over(score):
+	jumpintoball.modulate.a = 0
+	gameover.modulate.a = 1
 	pulser.game_over()
+	music_manager.game_over()
+	hi_score_display.text = score
 	pass
 
 func pulse_effect(position):
