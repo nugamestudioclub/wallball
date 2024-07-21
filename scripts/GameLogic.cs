@@ -266,6 +266,8 @@ public class GameLogic : Node2D {
 		environment.Call("pulse_effect", PlayToScreenPosition(point));
 		environment.Call("spawn_particles", PlayToScreenPosition(point), ball.Velocity);
 
+		environment.Call("play_wall_hit", random.Next(3) + 1);
+
 	}
 
 	private void Initialize() {
@@ -418,10 +420,7 @@ public class GameLogic : Node2D {
 		}
 		else if( comboInput != "" ) {
 			comboHandler.Call("accept_input", comboInput);
-
 		}
-
-
 	}
 
 
