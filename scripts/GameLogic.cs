@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Runtime;
+using static Godot.VisualServer;
 
 public enum GameStage {
 	Seeking,
@@ -128,7 +130,8 @@ public class GameLogic : Node2D {
 		player.JumpSpeed = playerConfig.JumpSpeed;
 		player.MoveSpeed = playerConfig.MoveSpeed;
 
-		Initialize();
+        GetEnvironment().Call("update_hi_score", settings.highScore.ToString());
+        Initialize();
 		Reset();
 	}
 
@@ -245,8 +248,9 @@ public class GameLogic : Node2D {
 
 	private void GameOver() {
 		var environment = GetEnvironment();
-		environment.Call("game_over", 0.ToString()); // TODO: pass high score
-
+		settings.highScore = Math.Max(score, settings.highScore);
+		environment.Call("game_over", settings.highScore.ToString());
+		SaveSettings();
 		Initialize();
 
 		hasStarted = false;
@@ -558,7 +562,8 @@ public class GameLogic : Node2D {
 		stage = GameStage.Seeking;
 
 		score = 0;
-	}
+        environment.Call("update_score", score.ToString());
+    }
 
 	private Vector2 ScreenToPlayPosition(Vector2 position) {
 		var scale = ScreenToPlayScale();

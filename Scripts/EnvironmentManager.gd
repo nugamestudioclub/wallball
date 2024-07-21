@@ -48,6 +48,10 @@ func _ready():
 func update_score(score): 
 	score_display.text = score
 	pass
+	
+func update_hi_score(score): 
+	hi_score_display.text = score
+	pass
 
 func play_wall_hit(index):
 	music_manager.play_wall_hit(index)
