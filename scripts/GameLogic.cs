@@ -408,7 +408,7 @@ public class GameLogic : Node2D {
 			Godot.Collections.Array comboChars = (Godot.Collections.Array)comboValue.Get("inputs");
 
 			currentComboCode = comboChars.Count > 0 ? (string)comboChars[0] : "";
-			GD.Print($"Combo completed with score: {comboScore}");
+			// GD.Print($"Combo completed with score: {comboScore}");
 			score += comboScore;
 			Node2D environment = GetEnvironment();
 			environment.Call("update_score", score.ToString());
@@ -507,8 +507,11 @@ public class GameLogic : Node2D {
 		switch( stage ) {
 		case GameStage.Serving:
 			if( input.Finish || timeInStage >= serveDuration ) {
+				float speedup = input.Finish && currentComboCode != ""
+					? gameConfig.BallNormalSpeedup
+					: gameConfig.BallFasterSpeedup;
 				float angle = (CalculateComboAngle(currentComboCode) / 180f) * Mathf.Pi;
-				ball.Velocity = CalculateThrowVelocity(angle);
+				ball.Velocity = CalculateThrowVelocity(angle, speedup);
 				ChangeStage(GameStage.Recovering);
 			}
 			break;
@@ -523,8 +526,8 @@ public class GameLogic : Node2D {
 		}
 	}
 
-	private Vector2 CalculateThrowVelocity(float angle) {
-		var magnitude = Mathf.Max(ball.Velocity.Length(), ballConfig.InitialSpeed);
+	private Vector2 CalculateThrowVelocity(float angle, float speedup) {
+		var magnitude = Mathf.Max(ball.Velocity.Length() * (1f + speedup), ballConfig.InitialSpeed);
 		var throwDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 		var catchDirection = new Vector2(catchVector.x, Mathf.Min(catchVector.y, 0f)).Normalized();
 		return (catchDirection * catchInfluencePercent + throwDirection).Normalized() * magnitude;
@@ -588,7 +591,7 @@ public class GameLogic : Node2D {
 	}
 
 	private void _OnVolumeChanged(float newVol) {
-		GD.Print("Changed");
+		// GD.Print("Changed");
 		settings.volume = newVol;
 		SaveSettings();
 	}

@@ -15,4 +15,10 @@ public class GameConfig : Resource {
 
     [Export]
     public float CatchInfluence { get; set; } = 1.0f;
+
+	[Export]
+	public float BallNormalSpeedup { get; set; } = 0.0f;
+
+	[Export]
+	public float BallFasterSpeedup { get; set; } = 0.0f;
 }
