@@ -49,7 +49,7 @@ func game_reset():
 func game_start():
 	pass
 	
-func game_over():
+func game_over(score):
 	pulser.game_over()
 	pass
 
