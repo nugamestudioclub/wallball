@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/SFX-Ball_Hit2.mp3-c5bbfde5d754951cd37e1a4128b28f0a.mp3str"
+
+[deps]
+
+source_file="res://Assets/SFX/SFX-Ball_Hit2.mp3"
+dest_files=[ "res://.import/SFX-Ball_Hit2.mp3-c5bbfde5d754951cd37e1a4128b28f0a.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
