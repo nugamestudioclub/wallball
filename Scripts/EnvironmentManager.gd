@@ -69,6 +69,8 @@ func game_reset():
 	jumpintoball.modulate.a = 1
 	gameover.modulate.a = 0
 	infinitymirror.reset()
+	music_manager.game_over()
+	pulser.ending_color = Color("123967")
 	pass
 	
 func game_start():
@@ -76,6 +78,7 @@ func game_start():
 	gameover.modulate.a = 0
 	music_manager.game_start()
 	infinitymirror.start()
+	pulser.ending_color = Color("ff6600")
 	pass
 	
 func game_over(score):
@@ -84,6 +87,7 @@ func game_over(score):
 	pulser.game_over()
 	music_manager.game_over()
 	hi_score_display.text = score
+	pulser.ending_color = Color("123967")
 	pass
 
 func pulse_effect(position):
@@ -121,20 +125,20 @@ func backpedal_aberration():
 func _process(delta):
 	if aberration == 1:
 		blueshift.modulate.a += 0.01
-		blueshift.position.x += 0.2
+		blueshift.position.x += 0.4
 		blueshift.position.y += 0.1
 
 		redshift.modulate.a += 0.01
-		redshift.position.x -= 0.2
+		redshift.position.x -= 0.4
 		redshift.position.y -= 0.1
 		if blueshift.modulate.a >= 0.2:
 			aberration = 0
 	elif aberration == -1:
 		blueshift.modulate.a -= 0.01
-		blueshift.position.x -= 0.2
+		blueshift.position.x -= 0.4
 		blueshift.position.y -= 0.1
 		
-		redshift.position.x += 0.2
+		redshift.position.x += 0.4
 		redshift.position.y += 0.1
 		redshift.modulate.a -= 0.01
 		if blueshift.modulate.a <= 0:

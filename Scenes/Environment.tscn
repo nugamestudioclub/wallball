@@ -323,13 +323,16 @@ TO START!"
 align = 1
 
 [node name="GameOver" type="Label" parent="UI"]
-margin_left = -51.0
-margin_top = -120.0
-margin_right = 53.0
-margin_bottom = -96.0
+margin_left = -61.0
+margin_top = -151.0
+margin_right = 63.0
+margin_bottom = -73.0
 custom_colors/font_color = Color( 0.760784, 0.690196, 0.854902, 1 )
 custom_fonts/font = SubResource( 14 )
-text = "GAME OVER"
+text = "GAME OVER
+PRESS SPACE
+TO RESET"
+align = 1
 
 [node name="HiScore Label" type="RichTextLabel" parent="UI"]
 margin_left = 166.0
@@ -352,11 +355,11 @@ custom_fonts/normal_font = SubResource( 6 )
 text = "HIGHSCORE"
 
 [node name="Credits" type="Label" parent="UI"]
-margin_left = -194.778
-margin_top = 261.372
-margin_right = 237.222
-margin_bottom = 300.372
-rect_rotation = 270.0
+margin_left = 469.0
+margin_top = 151.0
+margin_right = 901.0
+margin_bottom = 190.0
+rect_rotation = 90.0
 rect_pivot_offset = Vector2( 161.203, -317.575 )
 custom_colors/font_color = Color( 0.101961, 0.101961, 0.12549, 1 )
 custom_fonts/font = SubResource( 15 )
@@ -365,11 +368,11 @@ Joshua Sun         Joe Turco"
 align = 1
 
 [node name="Credits2" type="Label" parent="UI"]
-margin_left = -127.0
-margin_top = 151.0
-margin_right = 305.0
-margin_bottom = 190.0
-rect_rotation = 90.0
+margin_left = -792.0
+margin_top = 261.0
+margin_right = -360.0
+margin_bottom = 300.0
+rect_rotation = 270.0
 rect_pivot_offset = Vector2( 161.203, -317.575 )
 custom_colors/font_color = Color( 0.101961, 0.101961, 0.12549, 1 )
 custom_fonts/font = SubResource( 15 )
