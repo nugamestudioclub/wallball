@@ -39,7 +39,7 @@ func _ready():
 	score_display = get_node("UI/Score Label")
 	hi_score_display = get_node("UI/HiScore Label")
 	jumpintoball = get_node("UI/JumpIntoTheBall")
-	gameover = get_node("UI/JumpIntoTheBall")
+	gameover = get_node("UI/GameOver")
 	infinitymirror = get_node("Infinity Mirror")
 	game_reset()
 	pass # Replace with function body.
