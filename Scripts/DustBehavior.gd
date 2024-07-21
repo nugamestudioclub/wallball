@@ -9,11 +9,12 @@ export var decay_rate = 0.03
 export var rotation_rate = 0.03
 export var x_rate = 0.01
 export var y_rate = 0.02
+export var toplvl = false
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
+	self.set_as_toplevel(toplvl)
 	pass # Replace with function body.
 
 
