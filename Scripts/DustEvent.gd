@@ -27,8 +27,8 @@ func _ready():
 		d.modulate = dust_color
 		d.modulate.a = rand_range(0.25, 1)
 		d.rotation_rate = rand_range(-0.3,0.3)
-		d.x_rate = rand_range(-0.75,0.75)
-		d.y_rate = rand_range(-0.75,0.75)
+		d.x_rate = rand_range(x_min_rate,x_max_rate)
+		d.y_rate = rand_range(y_min_rate,y_max_rate)
 		add_child(d)
 	pass # Replace with function body.
 
