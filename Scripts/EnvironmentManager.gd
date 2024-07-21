@@ -23,8 +23,8 @@ var gameover
 
 var infinitymirror
 
-var basedust = load("res://Scenes/dustevent.tscn")
-var pulseeffect = load("res://Scenes/pulseeffecttiles.tscn")
+var basedust = load("res://scenes/dustevent.tscn")
+var pulseeffect = load("res://scenes/pulseeffecttiles.tscn")
 
 var aberration = 0
 var ab_rate = 0.01

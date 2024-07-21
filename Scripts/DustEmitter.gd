@@ -18,7 +18,7 @@ export var y_pos_offset = 0
 export var dust_color = Color(1,1,1,1)
 export var toplvl : bool = false
 
-var basedust = load("res://Scenes/basedust.tscn")
+var basedust = load("res://scenes/basedust.tscn")
 
 var frame_counter = 0
 

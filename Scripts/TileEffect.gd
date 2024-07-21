@@ -1,6 +1,6 @@
 extends TileMap
 
-var pulseeffect = load("res://Scenes/pulseeffecttiles.tscn")
+var pulseeffect = load("res://scenes/pulseeffecttiles.tscn")
 #var dusteffect = 
 export var rate = 0.0005
 export var starting_color = Color(0.75,0.75,1,1)

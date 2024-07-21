@@ -7,7 +7,7 @@ extends Node2D
 
 export var radius = 50
 
-var dusteffect = load("res://Scenes/dustemitter.tscn")
+var dusteffect = load("res://scenes/dustemitter.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

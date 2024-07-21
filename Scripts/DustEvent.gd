@@ -14,7 +14,7 @@ export var y_min_rate = -0.75
 export var y_max_rate = 0.75
 export var dust_color = Color(1,1,1,1)
 
-var basedust = load("res://Scenes/basedust.tscn")
+var basedust = load("res://scenes/basedust.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
