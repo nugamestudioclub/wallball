@@ -8,6 +8,34 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Resource",
+"class": "Combo",
+"language": "GDScript",
+"path": "res://scripts/Combo.gd"
+}, {
+"base": "Node",
+"class": "ComboHandler",
+"language": "GDScript",
+"path": "res://scripts/ComboHandler.gd"
+}, {
+"base": "HBoxContainer",
+"class": "ComboItem",
+"language": "GDScript",
+"path": "res://scripts/ComboItem.gd"
+}, {
+"base": "Resource",
+"class": "ComboListData",
+"language": "GDScript",
+"path": "res://scripts/ComboListData.gd"
+} ]
+_global_script_class_icons={
+"Combo": "",
+"ComboHandler": "",
+"ComboItem": "",
+"ComboListData": ""
+}
+
 [application]
 
 config/name="wallball"
