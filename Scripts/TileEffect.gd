@@ -23,6 +23,17 @@ func reset():
 	game_started = 0
 	cur_color = starting_color
 	pass
+	
+func game_over():
+	var p = pulseeffect.instance()
+	p.color = Color(1,0,0,1)
+	p.starting_energy = 6
+	p.scale_inc_rate = 0.15
+	p.rot_rate = 0.00
+	p.blue_shift_rate = 0.000
+	p.position.x = 0 - self.position.x
+	p.position.y = 0 - self.position.y
+	add_child(p)
 
 func pulse_tiles(position):
 	var pef = pulseeffect.instance()
