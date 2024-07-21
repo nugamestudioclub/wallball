@@ -31,11 +31,11 @@ func _ready():
 	#game_over()
 	pass # Replace with function body.
 	
-func play_wall_hit(index)
+func play_wall_hit(index):
 	music_manager.play_wall_hit(index)
 	pass
 	
-func play_combo_hit(index)
+func play_combo_hit(index):
 	music_manager.play_combo_hit(index)
 	pass
 	
